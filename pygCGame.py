@@ -29,7 +29,7 @@ LOOP_END_SCREEN    = 5
 # Class
 class CGame:
     def __init__(self, ScreenTitle='Vier Gewinnt', DisplayWidth=800, DisplayHeight=600, DisplayMode=0):
-        # System Defines
+        # Basic pygame settings
         pg.init()
         if DisplayMode == 0:
             self.FrontBufferScreen = pg.display.set_mode((DisplayWidth, DisplayHeight), pg.SHOWN)
