@@ -49,11 +49,13 @@ class CGame:
 
 
         # GameText-Objects --> Title-Screen
+        # GameText: InfoLine1
         self.gtInfoLine1 = pgText.CText(
             self.BackBufferScreen, 'Producer: Lee Kramer  -  Produced: 2022-06-10  -  Version: 1.0', 180, 550)
         self.gtInfoLine1.setFontSize(18)
         self.gtInfoLine1.setTextColor([80, 80, 0])
 
+        # GameText: InfoLine2
         self.gtInfoLine2 = pgText.CText(
             self.BackBufferScreen, 'Made with Python 3.10 & PyGame 2.1.0', 250, 570)
         self.gtInfoLine2.setFontSize(18)
@@ -90,19 +92,18 @@ class CGame:
         self.gtMenu_Cursor.setFontBold(True)
         self.gtMenu_Cursor.setTextColor([255, 0, 0])
 
-
+        # GameText-Objects --> !! FOR TESTS ONLY !!
         self.gtTEST1        = pgText.CText(self.BackBufferScreen)
 
 
         # GameImage-Objects
         self.giTitle = pg.image.load('./graphic/titelbild.png')
 
-        # GameAudio-Objects
-        # Game Music
+        # GameAudio-Objects --> Music
         # pg.mixer.music.load('')
         # pg.mixer.music.play(-1, 0)
 
-        # Game Sounds
+        # GameAudio-Objects --> Sounds
         self.gsMenuMove      = pg.mixer.Sound('./audio/menu_move.mp3')
         self.gsMenuReturn    = pg.mixer.Sound('./audio/menu_return.mp3')
         self.gsCoinInsert    = pg.mixer.Sound('./audio/coin_insert.mp3')
@@ -118,7 +119,7 @@ class CGame:
         self.Sound_ON        = False
 
         # Game-Object Defines
-        # menuCursor
+        # menuCursor --> Blinkender Pfeil für die Menüauswahl
         self.menuCursorTime  = 0
         self.menuCursorFreq  = 500
         self.menuCursorSwap  = False
