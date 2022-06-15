@@ -1,1 +1,1 @@
-# pygVierGewinnt
+# Vier-Gewinnt Klon
