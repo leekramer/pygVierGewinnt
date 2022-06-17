@@ -15,16 +15,7 @@
 # Import
 import pygame as pg
 import pygCText as pgText
-
-
-# Defines
-LOOP_TITLE_SCREEN  = 0
-LOOP_MENU_SCREEN   = 1
-LOOP_GAME_SCREEN   = 2
-LOOP_RULES_SCREEN  = 3
-LOOP_OPTION_SCREEN = 4
-LOOP_END_SCREEN    = 5
-
+import pygDataManagement as pgDM
 
 # Class
 class CGame:
@@ -41,82 +32,29 @@ class CGame:
             self.FrontBufferScreen = pg.display.set_mode((DisplayWidth, DisplayHeight))
 
         pg.display.set_caption(ScreenTitle)
-        self.GameTitle = ScreenTitle
-        self.ScreenWidth = pg.display.get_surface().get_width()
-        self.ScreenHeight = pg.display.get_surface().get_height()
-        self.BackBufferScreen = pg.Surface((self.ScreenWidth, self.ScreenHeight))
-        self.Clock = pg.time.Clock()
+        self.GameTitle             = ScreenTitle
+        self.ScreenWidth           = pg.display.get_surface().get_width()
+        self.ScreenHeight          = pg.display.get_surface().get_height()
+        self.BackBufferScreen      = pg.Surface((self.ScreenWidth, self.ScreenHeight))
+        self.Clock                 = pg.time.Clock()
 
+        # Sub-Data-Class-Menus
+        self.BasicVar              = pgDM.CBasicVar()
+        self.objGameText           = pgDM.CGameText(self.BackBufferScreen)
+        self.objGameImage          = pgDM.CGameImage()
+        self.objGameAudio          = pgDM.CGameAudio()
 
-        # GameText-Objects --> Title-Screen
-        # GameText: InfoLine1
-        self.gtInfoLine1 = pgText.CText(
-            self.BackBufferScreen, 'Producer: Lee Kramer  -  Produced: 2022-06-10  -  Version: 1.0', 180, 550)
-        self.gtInfoLine1.setFontSize(18)
-        self.gtInfoLine1.setTextColor([80, 80, 0])
+        # GameMusic
+        # pg.mixer.music.load(self.objGameAudio.game_music)
 
-        # GameText: InfoLine2
-        self.gtInfoLine2 = pgText.CText(
-            self.BackBufferScreen, 'Made with Python 3.10 & PyGame 2.1.0', 250, 570)
-        self.gtInfoLine2.setFontSize(18)
-        self.gtInfoLine2.setTextColor([80, 80, 0])
-
-
-        # GameText-Objects --> Menu-Screen
-        gtMenuOffset        = 30
-        menuFontSize        = 25
-        menuTextColor       = [160, 160, 160]
-
-        self.gtMenu_PLvsCPU = pgText.CText(self.BackBufferScreen, 'Spieler vs CPU', 350, 300 + 1 * gtMenuOffset)
-        self.gtMenu_PLvsCPU.setFontSize(menuFontSize)
-        self.gtMenu_PLvsCPU.setTextColor(menuTextColor)
-
-        self.gtMenu_PLvsPL  = pgText.CText(self.BackBufferScreen, 'Spieler vs Spieler', 350, 300 + 2 * gtMenuOffset)
-        self.gtMenu_PLvsPL.setFontSize(menuFontSize)
-        self.gtMenu_PLvsPL.setTextColor(menuTextColor)
-
-        self.gtMenu_RULES   = pgText.CText(self.BackBufferScreen, 'Spielregeln', 350, 300 + 3 * gtMenuOffset)
-        self.gtMenu_RULES.setFontSize(menuFontSize)
-        self.gtMenu_RULES.setTextColor(menuTextColor)
-
-        self.gtMenu_OPTION  = pgText.CText(self.BackBufferScreen, 'Option', 350, 300 + 4 * gtMenuOffset)
-        self.gtMenu_OPTION.setFontSize(menuFontSize)
-        self.gtMenu_OPTION.setTextColor(menuTextColor)
-
-        self.gtMenu_END     = pgText.CText(self.BackBufferScreen, 'Spiel beenden', 350, 300 + 5 * gtMenuOffset)
-        self.gtMenu_END.setFontSize(menuFontSize)
-        self.gtMenu_END.setTextColor(menuTextColor)
-
+        # GameText -> Menü-Cursor
         self.gtMenu_Cursor  = pgText.CText(self.BackBufferScreen, '>', 330, 330)
-        self.gtMenu_Cursor.setFontSize(menuFontSize)
+        self.gtMenu_Cursor.setFontSize(25)
         self.gtMenu_Cursor.setFontBold(True)
         self.gtMenu_Cursor.setTextColor([255, 0, 0])
 
         # GameText-Objects --> !! FOR TESTS ONLY !!
         self.gtTEST1        = pgText.CText(self.BackBufferScreen)
-
-
-        # GameImage-Objects
-        self.giTitle = pg.image.load('./graphic/titelbild.png')
-
-        # GameAudio-Objects --> Music
-        # pg.mixer.music.load('')
-        # pg.mixer.music.play(-1, 0)
-
-        # GameAudio-Objects --> Sounds
-        self.gsMenuMove      = pg.mixer.Sound('./audio/menu_move.mp3')
-        self.gsMenuReturn    = pg.mixer.Sound('./audio/menu_return.mp3')
-        self.gsCoinInsert    = pg.mixer.Sound('./audio/coin_insert.mp3')
-        self.gsCoinMove      = pg.mixer.Sound('./audio/coin_move.mp3')
-        self.gsWin           = pg.mixer.Sound('./audio/win.mp3')
-
-        # Game Defines
-        self.GameLoop        = True
-        self.GameBreak       = False
-        self.LoopPage        = LOOP_TITLE_SCREEN  # LOOP_MENU_SCREEN  # LOOP_TITLE_SCREEN
-        self.TitleScreen_ON  = True
-        self.Music_ON        = False
-        self.Sound_ON        = False
 
         # Game-Object Defines
         # menuCursor --> Blinkender Pfeil für die Menüauswahl
@@ -132,27 +70,27 @@ class CGame:
         print('Resolution  : {}x{}'.format(self.ScreenWidth, self.ScreenHeight))
 
     def gLoop(self):
-        while self.GameLoop:
+        while self.BasicVar.GameLoop:
             # Events
             self.__gEvents()
 
             # Loop Screens
-            if self.LoopPage == LOOP_TITLE_SCREEN:
+            if self.BasicVar.LoopPage == pgDM.LoopPage.title:
                 self.__gTitleScreen()
 
-            elif self.LoopPage == LOOP_MENU_SCREEN:
+            elif self.BasicVar.LoopPage == pgDM.LoopPage.menu:
                 self.__gMenuScreen()
 
-            elif self.LoopPage == LOOP_GAME_SCREEN:
+            elif self.BasicVar.LoopPage == pgDM.LoopPage.game:
                 self.__gGameScreen()
 
-            elif self.LoopPage == LOOP_RULES_SCREEN:
+            elif self.BasicVar.LoopPage == pgDM.LoopPage.rules:
                 self.__gRulesScreen()
 
-            elif self.LoopPage == LOOP_OPTION_SCREEN:
+            elif self.BasicVar.LoopPage == pgDM.LoopPage.option:
                 self.__gOptionScreen()
 
-            elif self.LoopPage == LOOP_END_SCREEN:
+            elif self.BasicVar.LoopPage == pgDM.LoopPage.end:
                 self.__gEndScreen()
 
             # FrontBuffer Actions
@@ -163,26 +101,27 @@ class CGame:
         pg.quit()
 
     def __gTitleScreen(self):
-        if self.TitleScreen_ON:
-            # BackBuffer Actions
-            # Layer 0 [Foundation Layer]
-            self.BackBufferScreen.fill((0, 0, 0))
+        # BackBuffer Actions
+        # Layer 0 [Foundation Layer]
+        self.BackBufferScreen.fill((0, 0, 0))
 
-            # Layer 1
-            self.BackBufferScreen.blit(self.giTitle, (150, 100))
+        # Layer 1
+        self.BackBufferScreen.blit(self.objGameImage.img_title_screen, (150, 100))
 
-            # Layer 2
+        # Layer 2
 
-            # Layer 3 [Text Layer]
-            self.gtInfoLine1.drawText()
-            self.gtInfoLine2.drawText()
+        # Layer 3 [Text Layer]
+        self.objGameText.title_bottom_info1.drawText()
+        self.objGameText.title_bottom_info2.drawText()
 
-            self.TitleScreen_ON = False
+        self.FrontBufferScreen.blit(self.BackBufferScreen, (0, 0))
+        pg.display.flip()
 
         # Nach 5 Sekunden -> Umschaltung auf Menü-Loop
-        elif not self.TitleScreen_ON:
-            pg.time.wait(5000)
-            self.LoopPage = LOOP_MENU_SCREEN
+        pg.time.wait(5000)
+        self.BasicVar.LoopPage = pgDM.LoopPage.menu
+        # pg.mixer.music.play(-1, 0)
+
 
     def __gMenuScreen(self):
         # BackBuffer Actions
@@ -190,18 +129,17 @@ class CGame:
         self.BackBufferScreen.fill((0, 0, 0))
 
         # Layer 1
-        self.BackBufferScreen.blit(self.giTitle, (150, 10))
+        self.BackBufferScreen.blit(self.objGameImage.img_title_screen, (150, 10))
 
         # Layer 2
         self.__gMenuCursorAnimation()
 
         # Layer 3 [Text Layer]
-        self.gtMenu_PLvsCPU.drawText()
-        self.gtMenu_PLvsPL.drawText()
-        self.gtMenu_RULES.drawText()
-        self.gtMenu_OPTION.drawText()
-        self.gtMenu_END.drawText()
-
+        self.objGameText.menu_PLvsCPU.drawText()
+        self.objGameText.menu_PLvsPL.drawText()
+        self.objGameText.menu_RULES.drawText()
+        self.objGameText.menu_OPTION.drawText()
+        self.objGameText.menu_END.drawText()
 
     def __gMenuCursorAnimation(self):
         self.gtMenu_Cursor.drawText()
@@ -274,56 +212,56 @@ class CGame:
     def __gEvents(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                self.GameLoop = False  # Spiel beenden
+                self.BasicVar.GameLoop = False  # Spiel beenden
 
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:  # Spiel beenden
-                    self.GameLoop = False
+                    self.BasicVar.GameLoop = False
 
-                if self.LoopPage == LOOP_TITLE_SCREEN:
+                if self.BasicVar.LoopPage == pgDM.LoopPage.title:
                     pass
 
-                elif self.LoopPage == LOOP_MENU_SCREEN:
+                elif self.BasicVar.LoopPage == pgDM.LoopPage.menu:
                     if event.key == pg.K_RETURN:
                         if self.menuCursorState == 0:       # Spieler vs CPU
-                            pg.mixer.Sound.play(self.gsMenuReturn)
-                            self.LoopPage        = LOOP_GAME_SCREEN
+                            self.BasicVar.LoopPage = pgDM.LoopPage.game
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
 
                         elif self.menuCursorState == 1:     # Spieler vs Spieler
-                            self.LoopPage        = LOOP_GAME_SCREEN
-                            pg.mixer.Sound.play(self.gsMenuReturn)
+                            self.BasicVar.LoopPage = pgDM.LoopPage.game
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
 
                         elif self.menuCursorState == 2:     # Spielregeln
-                            self.LoopPage        = LOOP_RULES_SCREEN
-                            pg.mixer.Sound.play(self.gsMenuReturn)
+                            self.BasicVar.LoopPage = pgDM.LoopPage.rules
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
 
                         elif self.menuCursorState == 3:     # Option
-                            self.LoopPage        = LOOP_OPTION_SCREEN
-                            pg.mixer.Sound.play(self.gsMenuReturn)
+                            self.BasicVar.LoopPage = pgDM.LoopPage.option
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
 
                         elif self.menuCursorState == 4:     # Spiel beenden
-                            self.LoopPage        = LOOP_END_SCREEN
-                            pg.mixer.Sound.play(self.gsMenuReturn)
+                            self.BasicVar.LoopPage = pgDM.LoopPage.end
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
 
 
                     elif event.key == pg.K_UP:
                         if self.menuCursorYPos > 330:
-                            pg.mixer.Sound.play(self.gsMenuMove)
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
                             self.menuCursorYPos -= 30
                             self.menuCursorState -= 1
                             self.gtMenu_Cursor.setTextPosition(330, self.menuCursorYPos)
 
                     elif event.key == pg.K_DOWN:
                         if self.menuCursorYPos < 450:
-                            pg.mixer.Sound.play(self.gsMenuMove)
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
                             self.menuCursorYPos += 30
                             self.menuCursorState += 1
                             self.gtMenu_Cursor.setTextPosition(330, self.menuCursorYPos)
                         pass
 
-                elif self.LoopPage == LOOP_GAME_SCREEN:
+                elif self.BasicVar.LoopPage == pgDM.LoopPage.game:
                     if event.key == pg.K_RETURN:
-                        self.LoopPage = LOOP_MENU_SCREEN
+                        self.BasicVar.LoopPage = pgDM.LoopPage.menu
 
                     elif event.key == pg.K_LEFT:
                         pass
@@ -331,17 +269,17 @@ class CGame:
                     elif event.key == pg.K_RIGHT:
                         pass
 
-                elif self.LoopPage == LOOP_RULES_SCREEN:
+                elif self.BasicVar.LoopPage == pgDM.LoopPage.rules:
                     if event.key == pg.K_RETURN:
-                        self.LoopPage = LOOP_MENU_SCREEN
+                        self.BasicVar.LoopPage = pgDM.LoopPage.menu
 
-                elif self.LoopPage == LOOP_OPTION_SCREEN:
+                elif self.BasicVar.LoopPage == pgDM.LoopPage.option:
                     if event.key == pg.K_RETURN:
-                        self.LoopPage = LOOP_MENU_SCREEN
+                        self.BasicVar.LoopPage = pgDM.LoopPage.menu
 
-                elif self.LoopPage == LOOP_END_SCREEN:
+                elif self.BasicVar.LoopPage == pgDM.LoopPage.end:
                     if event.key == pg.K_RETURN:
-                        self.GameLoop = False
+                        self.BasicVar.GameLoop = False
 
                     elif event.key == pg.K_LEFT:
                         pass
