@@ -38,7 +38,7 @@ class CGame:
         self.BackBufferScreen      = pg.Surface((self.ScreenWidth, self.ScreenHeight))
         self.Clock                 = pg.time.Clock()
 
-        # Sub-Data-Class-Menus
+        # Data-Management-Class-Menus
         self.BasicVar              = pgDM.CBasicVar()
         self.objGameText           = pgDM.CGameText(self.BackBufferScreen)
         self.objGameImage          = pgDM.CGameImage()
