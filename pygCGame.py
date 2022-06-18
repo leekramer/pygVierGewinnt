@@ -1,7 +1,7 @@
 
 # ####################################################
 # Class       : CGame
-# Dependencies: pygame
+# Dependencies: pygame, pygCText, pygCMenuCursor, pygDataManagement
 # Developer   : Lee Kramer
 # Developed   : 2022-06-10
 # Version     : V1.0
@@ -17,6 +17,7 @@ import pygame as pg
 import pygCText as pgText
 import pygCMenuCursor as pgMenuCursor
 import pygDataManagement as pgDM
+
 
 # Class
 class CGame:

@@ -1,7 +1,7 @@
 
 # ####################################################
 # Class       : CMenuCursor
-# Dependencies: pygame, pygText
+# Dependencies: pygame, pygCText
 # Developer   : Lee Kramer
 # Developed   : 2022-06-18
 # Version     : V1.0
@@ -16,6 +16,8 @@
 import pygame as pg
 import pygCText as pgText
 
+
+# Class
 class CMenuCursor:
     def __init__(self, toBuffer, mcPosition, mcSteps, mcOffset):
         self.__CursorText = pgText.CText(toBuffer, '>', mcPosition[0], mcPosition[1])  # 330, 330

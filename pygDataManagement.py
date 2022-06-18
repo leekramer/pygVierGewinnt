@@ -17,6 +17,7 @@ import pygame as pg
 import pygCText as pgText
 import enum
 
+
 # Enum
 class LoopPage(enum.IntEnum):
     title  = 0
@@ -25,6 +26,7 @@ class LoopPage(enum.IntEnum):
     rules  = 3
     option = 4
     end    = 5
+
 
 # Class
 class CBasicVar:
