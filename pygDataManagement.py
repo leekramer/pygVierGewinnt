@@ -86,6 +86,27 @@ class CGameText:
         self.menu_END.setFontSize(25)
         self.menu_END.setTextColor([160, 160, 160])
 
+        # GameText -> Rules-Screen
+        self.rules_TITLE = pgText.CText(toBuffer, 'Regeln für Vier Gewinnt', 50, 150)
+        self.rules_TITLE.setFontType('Segoe UI')
+        self.rules_TITLE.setFontBold(True)
+        self.rules_TITLE.setFontSize(30)
+        self.rules_TITLE.setTextColor([0, 255, 0])
+
+        self.rules_RULES = pgText.CText(toBuffer, '', 50, 250)
+        self.rules_RULES.setFontType('Segoe UI')
+        self.rules_RULES.setTextColor([0, 255, 0])
+
+        self.rules_TEXT = ['Das Spiel wird auf einem senkrecht',
+                           'stehenden hohlen Spielbrett gespielt, in das die',
+                           'Spieler abwechselnd ihre Spielsteine fallen lassen. Das Spielbrett',
+                           'besteht aus sieben Spalten (senkrecht) und sechs Reihen',
+                           '(waagerecht). Jeder Spieler besitzt 21 gleichfarbige Spielsteine. Wenn ein Spieler',
+                           'einen Spielstein in eine Spalte fallen lässt, besetzt dieser den untersten freien Platz',
+                           'der Spalte. Gewinner ist der Spieler, der es als erster schafft, vier oder mehr',
+                           'seiner Spielsteine waagerecht, senkrecht oder diagonal in eine Linie zu bringen. Das',
+                           'Spiel endet unentschieden, wenn das Spielbrett komplett gefüllt ist, ohne dass ein',
+                           'Spieler eine Viererlinie gebildet hat.']
 
 class CGameImage:
     def __init__(self):

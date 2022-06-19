@@ -154,14 +154,20 @@ class CGame:
 
         # Layer 1
         self.objRulesBG.drawBackground()
-
-        self.BackBufferScreen.blit(self.objGameImage.img_rules_01, (400, 10))
+        self.BackBufferScreen.blit(self.objGameImage.img_rules_01, (420, 10))
 
         # Layer 2
 
         # Layer 3 [Text Layer]
-        self.gtTEST1.setTextName('Rules Screen')
-        self.gtTEST1.drawText()
+        self.objGameText.rules_TITLE.drawText()
+        pg.draw.line(self.BackBufferScreen, [0, 255, 0], [40, 190], [420, 190])
+        pg.draw.line(self.BackBufferScreen, [0, 255, 0], [30, 195], [400, 195])
+        text_offset = 0
+        for x in self.objGameText.rules_TEXT:
+            self.objGameText.rules_RULES.setTextName(x)
+            self.objGameText.rules_RULES.setTextPosition(50, 250 + text_offset)
+            self.objGameText.rules_RULES.drawText()
+            text_offset += 30
 
     def __gOptionScreen(self):
         # BackBuffer Actions
