@@ -8,7 +8,7 @@
 # ####################################################
 # Description
 # ===========
-# Umsetzung des Spiels "Vier Gewinnt"
+# Grundgerüst des Spiels
 #
 # ####################################################
 
@@ -17,6 +17,7 @@ import pygame as pg
 import pygCText as pgText
 import pygCMenuCursor as pgMenuCursor
 import pygDataManagement as pgDM
+import pygCRulesBackground as pgRBG
 
 
 # Class
@@ -54,6 +55,8 @@ class CGame:
 
         # Other Game-Objects
         self.objMenuCursor = pgMenuCursor.CMenuCursor(self.BackBufferScreen, [330, 330], 5, 30)
+        self.objRulesBG = pgRBG.CRulesBackgrund(self.BackBufferScreen, [0, 0], [800, 600])
+
 
         # Info to Terminal
         print('Display Mode: {}'.format(DisplayMode))
@@ -64,7 +67,7 @@ class CGame:
             # Events
             self.__gEvents()
 
-            # Loop Screens
+            # Loop-Pages
             if self.BasicVar.LoopPage == pgDM.LoopPage.title:
                 self.__gTitleScreen()
 
@@ -107,7 +110,7 @@ class CGame:
         self.FrontBufferScreen.blit(self.BackBufferScreen, (0, 0))
         pg.display.flip()
 
-        # Nach 5 Sekunden -> Umschaltung auf Menü-Loop
+        # Nach 5 Sekunden -> Umschaltung auf Loop-Page: Menü
         pg.time.wait(5000)
         self.BasicVar.LoopPage = pgDM.LoopPage.menu
         # pg.mixer.music.play(-1, 0)
@@ -150,6 +153,9 @@ class CGame:
         self.BackBufferScreen.fill((0, 0, 0))
 
         # Layer 1
+        self.objRulesBG.drawBackground()
+
+        self.BackBufferScreen.blit(self.objGameImage.img_rules_01, (400, 10))
 
         # Layer 2
 
@@ -196,9 +202,9 @@ class CGame:
                     pass
 
                 elif self.BasicVar.LoopPage == pgDM.LoopPage.menu:
-                    pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
 
                     if event.key == pg.K_RETURN:
+                        pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
                         if self.objMenuCursor.get_cursor_state() == 0:       # Spieler vs CPU
                             self.BasicVar.LoopPage = pgDM.LoopPage.game
 
