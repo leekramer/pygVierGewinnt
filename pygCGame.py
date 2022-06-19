@@ -1,7 +1,7 @@
 
 # ####################################################
 # Class       : CGame
-# Dependencies: pygame, pygCText, pygCMenuCursor, pygDataManagement
+# Dependencies: pygame, pygCText, pygCMenuCursor, pygDataManagement, pygCRulesBackground
 # Developer   : Lee Kramer
 # Developed   : 2022-06-10
 # Version     : V1.0
