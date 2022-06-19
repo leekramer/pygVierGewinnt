@@ -1,4 +1,17 @@
 
+# ####################################################
+# Class       : CRulesBackground
+# Dependencies: pygame
+# Developer   : Lee Kramer
+# Developed   : 2022-06-19
+# Version     : V1.0
+# ####################################################
+# Description
+# ===========
+# Hintergrund für die Rules Loop-Page
+#
+# ####################################################
+
 # Import
 import pygame as pg
 
