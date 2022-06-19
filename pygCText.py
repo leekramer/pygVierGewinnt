@@ -27,6 +27,9 @@ class CText:
         self.__FontItalic    = False
         self.__Font          = None
 
+        if tTextName == '':
+            tTextName = 'Text'
+
         self.__TextName      = tTextName
         self.__TextAntialias = True
         self.__TextColor     = [255, 255, 255]
