@@ -33,7 +33,7 @@ class CBasicVar:
     def __init__(self):
         self.GameLoop  = True
         self.GameBreak = False
-        self.LoopPage  = LoopPage.rules
+        self.LoopPage  = LoopPage.menu
         self.Music_ON  = False
         self.Sound_ON  = False
 

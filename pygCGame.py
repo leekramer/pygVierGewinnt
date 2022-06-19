@@ -248,6 +248,7 @@ class CGame:
 
                 elif self.BasicVar.LoopPage == pgDM.LoopPage.rules:
                     if event.key == pg.K_RETURN:
+                        pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
                         self.BasicVar.LoopPage = pgDM.LoopPage.menu
 
                 elif self.BasicVar.LoopPage == pgDM.LoopPage.option:
