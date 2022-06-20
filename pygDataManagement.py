@@ -110,27 +110,49 @@ class CGameText:
                            'Spieler eine Viererlinie gebildet hat.']
 
         # GameText -> Option-Screen
-        self.option_col_pl1 = pgText.CText(toBuffer, 'Chipfarbe Spieler 1', 270, 200)
+        self.option_title = pgText.CText(toBuffer, 'Option', 270, 100)
+        self.option_title.setFontBold(True)
+        self.option_title.setFontSize(30)
+        self.option_title.setTextColor([0, 255, 0])
+
+        self.option_col_pl1 = pgText.CText(toBuffer, 'Chipfarbe Spieler 1', 270, 150)
         self.option_col_pl1.setFontSize(25)
         self.option_col_pl1.setTextColor([160, 160, 160])
 
-        self.option_col_pl2 = pgText.CText(toBuffer, 'Chipfarbe CPU oder Spieler 2', 270, 290)
+        self.option_col_pl2 = pgText.CText(toBuffer, 'Chipfarbe CPU oder Spieler 2', 270, 240)
         self.option_col_pl2.setFontSize(25)
         self.option_col_pl2.setTextColor([160, 160, 160])
 
-        self.option_design = pgText.CText(toBuffer, 'Chipdesign', 270, 350)
+        self.option_design = pgText.CText(toBuffer, 'Chipdesign', 270, 330)
         self.option_design.setFontSize(25)
         self.option_design.setTextColor([160, 160, 160])
 
-        self.option_music = pgText.CText(toBuffer, 'Musik', 270, 380)
+        self.option_music = pgText.CText(toBuffer, 'Musik', 270, 420)
         self.option_music.setFontSize(25)
         self.option_music.setTextColor([160, 160, 160])
 
-        self.option_sound = pgText.CText(toBuffer, 'Sound', 270, 410)
+        self.option_music_an = pgText.CText(toBuffer, 'AN', 360, 420)
+        self.option_music_an.setFontSize(25)
+        self.option_music_an.setTextColor([0, 255, 0])
+
+        self.option_music_aus = pgText.CText(toBuffer, 'AUS', 420, 420)
+        self.option_music_aus.setFontSize(25)
+        self.option_music_aus.setTextColor([70, 70, 70])
+
+        self.option_sound = pgText.CText(toBuffer, 'Sound', 270, 450)
         self.option_sound.setFontSize(25)
         self.option_sound.setTextColor([160, 160, 160])
 
-        self.option_back = pgText.CText(toBuffer, 'Zurück', 270, 440)
+        self.option_sound_an = pgText.CText(toBuffer, 'AN', 360, 450)
+        self.option_sound_an.setFontSize(25)
+        self.option_sound_an.setTextColor([0, 255, 0])
+
+        self.option_sound_aus = pgText.CText(toBuffer, 'AUS', 420, 450)
+        self.option_sound_aus.setFontSize(25)
+        self.option_sound_aus.setTextColor([70, 70, 70])
+
+
+        self.option_back = pgText.CText(toBuffer, 'Zurück', 270, 510)
         self.option_back.setFontSize(25)
         self.option_back.setTextColor([160, 160, 160])
 

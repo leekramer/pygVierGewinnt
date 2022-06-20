@@ -157,8 +157,8 @@ class CGame:
 
         # Layer 3 [Text Layer]
         self.__objGameText.rules_TITLE.drawText()
-        pg.draw.line(self.__BackBufferScreen, [0, 255, 0], [40, 190], [420, 190])
-        pg.draw.line(self.__BackBufferScreen, [0, 255, 0], [30, 195], [400, 195])
+        pg.draw.line(self.__BackBufferScreen, [0, 150, 0], [40, 190], [420, 190])
+        pg.draw.line(self.__BackBufferScreen, [0, 150, 0], [30, 195], [400, 195])
         text_offset = 0
         for x in self.__objGameText.rules_TEXT:
             self.__objGameText.rules_RULES.setTextName(x)
@@ -172,15 +172,65 @@ class CGame:
         self.__objBG.drawBGGridballs()
 
         # Layer 1
+        chip_col_rim  = [[255, 255, 0], [255, 0, 0], [0, 255, 0], [0, 0, 255]]
+        chip_col_body = [[150, 150, 0], [150, 0, 0], [0, 150, 0], [0, 0, 150]]
+        for i in range(0, 4):
+            pg.draw.circle(self.__BackBufferScreen, chip_col_rim[i], [295 + (i * 70), 210], 20, 0)
+            pg.draw.circle(self.__BackBufferScreen, chip_col_body[i], [295 + (i * 70), 210], 16, 0)
+
+            pg.draw.circle(self.__BackBufferScreen, chip_col_rim[i], [295 + (i * 70), 300], 20, 0)
+            pg.draw.circle(self.__BackBufferScreen, chip_col_body[i], [295 + (i * 70), 300], 16, 0)
+
+        # Chipdesign
+        # Design_STD
+        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (0 * 70), 390], 20, 0)
+        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (0 * 70), 390], 16, 0)
+
+        # Design_Square
+        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (1 * 70), 390], 20, 0)
+        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (1 * 70), 390], 16, 0)
+        pg.draw.rect(self.__BackBufferScreen, [150, 150, 150], [295 - 6 + (1 * 70), 390 - 6, 12, 12], 0)
+
+        # Design_Circle
+        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (2 * 70), 390], 20, 0)
+        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (2 * 70), 390], 16, 0)
+        pg.draw.circle(self.__BackBufferScreen, [150, 150, 150], [295 + (2 * 70), 390], 7, 0)
+
+        # Design_Scratch
+        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (3 * 70), 390], 20, 0)
+        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (3 * 70), 390], 16, 0)
+        pg.draw.line(self.__BackBufferScreen, [150, 150, 150], [295 - 5 + (3 * 70), 390 + 5],
+                     [295 + 5 + (3 * 70), 390 - 5])
+        pg.draw.line(self.__BackBufferScreen, [150, 150, 150], [295 - 7 + (3 * 70), 390 + 3],
+                     [295 + 3 + (3 * 70), 390 - 7])
+        pg.draw.line(self.__BackBufferScreen, [150, 150, 150], [295 - 3 + (3 * 70), 390 + 7],
+                     [295 + 7 + (3 * 70), 390 - 3])
 
         # Layer 2
 
         # Layer 3 [Text Layer]
+        self.__objGameText.option_title.drawText()
+
+        # Underlines Option-Title
+        pg.draw.line(self.__BackBufferScreen, [0, 150, 0], [250, 133], [600, 133])
+        pg.draw.line(self.__BackBufferScreen, [0, 150, 0], [230, 138], [580, 138])
+
+        # Lines
+        pg.draw.line(self.__BackBufferScreen, [0, 150, 0], [250, 493], [600, 493])
+        pg.draw.line(self.__BackBufferScreen, [0, 150, 0], [230, 498], [580, 498])
+
         self.__objGameText.option_col_pl1.drawText()
         self.__objGameText.option_col_pl2.drawText()
         self.__objGameText.option_design.drawText()
+
         self.__objGameText.option_music.drawText()
+        self.__objGameText.option_music_an.drawText()
+        self.__objGameText.option_music_aus.drawText()
+
         self.__objGameText.option_sound.drawText()
+        self.__objGameText.option_sound_an.drawText()
+        self.__objGameText.option_sound_aus.drawText()
+
         self.__objGameText.option_back.drawText()
 
     def __gEndScreen(self):
