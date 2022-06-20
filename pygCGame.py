@@ -190,6 +190,11 @@ class CGame:
         self.BackBufferScreen.blit(self.objGameImage.img_title_screen, (150, 10))
 
         # Layer 2
+        if self.BasicVar.end_yesno == 0:
+            pg.draw.rect(self.BackBufferScreen, [0, 0, 255], [270, 410, 80, 30], 1)
+
+        elif self.BasicVar.end_yesno == 1:
+            pg.draw.rect(self.BackBufferScreen, [0, 0, 255], [270 + 165, 410, 80, 30], 1)
 
         # Layer 3 [Text Layer]
         self.objGameText.end_question.drawText()
@@ -257,10 +262,17 @@ class CGame:
 
                 elif self.BasicVar.LoopPage == pgDM.LoopPage.end:
                     if event.key == pg.K_RETURN:
-                        self.BasicVar.GameLoop = False
+                        pg.mixer.Sound.play(self.objGameAudio.snd_menu_return)
+                        if self.BasicVar.end_yesno == 0:
+                            self.BasicVar.GameLoop = False
+
+                        elif self.BasicVar.end_yesno == 1:
+                            self.BasicVar.LoopPage = pgDM.LoopPage.menu
 
                     elif event.key == pg.K_LEFT:
-                        pass
+                        pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
+                        self.BasicVar.end_yesno = 0
 
                     elif event.key == pg.K_RIGHT:
-                        pass
+                        pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
+                        self.BasicVar.end_yesno = 1
