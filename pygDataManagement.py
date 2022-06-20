@@ -108,6 +108,16 @@ class CGameText:
                            'Spiel endet unentschieden, wenn das Spielbrett komplett gefüllt ist, ohne dass ein',
                            'Spieler eine Viererlinie gebildet hat.']
 
+        # GameText -> End-Screen
+        self.end_question = pgText.CText(toBuffer, 'Möchtest du das Spiel beenden?', 250, 360)
+        self.end_question.setFontSize(25)
+        self.end_question.setTextColor([255, 0, 0])
+
+        self.end_yesno = pgText.CText(toBuffer, 'Ja                      Nein', 300, 410)
+        self.end_yesno.setFontSize(25)
+        self.end_yesno.setTextColor([255, 0, 0])
+
+
 class CGameImage:
     def __init__(self):
         self.img_title_screen = pg.image.load('./graphic/titelbild.png')

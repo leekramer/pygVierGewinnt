@@ -115,7 +115,6 @@ class CGame:
         self.BasicVar.LoopPage = pgDM.LoopPage.menu
         # pg.mixer.music.play(-1, 0)
 
-
     def __gMenuScreen(self):
         # BackBuffer Actions
         # Layer 0 [Foundation Layer]
@@ -188,12 +187,13 @@ class CGame:
         self.BackBufferScreen.fill((0, 0, 0))
 
         # Layer 1
+        self.BackBufferScreen.blit(self.objGameImage.img_title_screen, (150, 10))
 
         # Layer 2
 
         # Layer 3 [Text Layer]
-        self.gtTEST1.setTextName('End Screen')
-        self.gtTEST1.drawText()
+        self.objGameText.end_question.drawText()
+        self.objGameText.end_yesno.drawText()
 
     def __gEvents(self):
         for event in pg.event.get():
