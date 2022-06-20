@@ -33,7 +33,7 @@ class CBasicVar:
     def __init__(self):
         self.GameLoop  = True
         self.GameBreak = False
-        self.LoopPage  = LoopPage.title
+        self.LoopPage  = LoopPage.option
         self.Music_ON  = False
         self.Sound_ON  = False
         self.end_yesno = 1
@@ -146,8 +146,9 @@ class CGameText:
 
 class CGameImage:
     def __init__(self):
-        self.img_title_screen = pg.image.load('./graphic/titelbild.png')
+        self.img_title_screen = pg.image.load('./graphic/vg_title.png')
         self.img_rules_01     = pg.image.load('./graphic/vg_01.png')
+        self.icon             = pg.image.load('./graphic/vg_icon.png')
 
 class CGameAudio:
     def __init__(self):

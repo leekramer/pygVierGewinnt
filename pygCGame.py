@@ -34,8 +34,6 @@ class CGame:
         else:
             self.__FrontBufferScreen = pg.display.set_mode((displayWidth, displayHeight))
 
-        pg.display.set_caption(ScreenTitle)
-        self.__GameTitle             = ScreenTitle
         self.__BackBufferScreen      = pg.Surface((displayWidth, displayHeight))
         self.__Clock                 = pg.time.Clock()
 
@@ -44,6 +42,10 @@ class CGame:
         self.__objGameText           = pgDM.CGameText(self.__BackBufferScreen)
         self.__objGameImage          = pgDM.CGameImage()
         self.__objGameAudio          = pgDM.CGameAudio()
+
+        pg.display.set_caption(ScreenTitle)
+        pg.display.set_icon(self.__objGameImage.icon)
+
 
         # GameMusic
         # pg.mixer.music.load(self.objGameAudio.game_music)
