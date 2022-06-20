@@ -1,7 +1,7 @@
 
 # ####################################################
-# Class       : LoopPage, CBasicVar, CGameText, CGameImage, CGameAudio
-# Dependencies: pygame, pygText, enum
+# Class       : CBasicVar, CGameText, CGameImage, CGameAudio
+# Dependencies: pygame, pygCText, enum
 # Developer   : Lee Kramer
 # Developed   : 2022-06-17
 # Version     : V1.0

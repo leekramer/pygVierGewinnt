@@ -18,6 +18,7 @@ import pygCText as pgText
 import pygCMenuCursor as pgMenuCursor
 import pygDataManagement as pgDM
 import pygCBackground as pgBG
+import pygCChip as pgChip
 
 
 # Class
@@ -53,6 +54,7 @@ class CGame:
         # Other Game-Objects
         self.__objMenuCursor         = pgMenuCursor.CMenuCursor(self.__BackBufferScreen, [330, 330], 5, 30)
         self.__objBG                 = pgBG.CBackgrund(self.__BackBufferScreen)
+        self.__objChip               = pgChip.CChip(self.__BackBufferScreen, 0, 0)
 
         # GameText-Objects --> !! FOR TESTS ONLY !!
         self.gtTEST1                 = pgText.CText(self.__BackBufferScreen)
@@ -172,39 +174,10 @@ class CGame:
         self.__objBG.drawBGGridballs()
 
         # Layer 1
-        chip_col_rim  = [[255, 255, 0], [255, 0, 0], [0, 255, 0], [0, 0, 255]]
-        chip_col_body = [[150, 150, 0], [150, 0, 0], [0, 150, 0], [0, 0, 150]]
         for i in range(0, 4):
-            pg.draw.circle(self.__BackBufferScreen, chip_col_rim[i], [295 + (i * 70), 210], 20, 0)
-            pg.draw.circle(self.__BackBufferScreen, chip_col_body[i], [295 + (i * 70), 210], 16, 0)
-
-            pg.draw.circle(self.__BackBufferScreen, chip_col_rim[i], [295 + (i * 70), 300], 20, 0)
-            pg.draw.circle(self.__BackBufferScreen, chip_col_body[i], [295 + (i * 70), 300], 16, 0)
-
-        # Chipdesign
-        # Design_STD
-        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (0 * 70), 390], 20, 0)
-        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (0 * 70), 390], 16, 0)
-
-        # Design_Square
-        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (1 * 70), 390], 20, 0)
-        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (1 * 70), 390], 16, 0)
-        pg.draw.rect(self.__BackBufferScreen, [150, 150, 150], [295 - 6 + (1 * 70), 390 - 6, 12, 12], 0)
-
-        # Design_Circle
-        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (2 * 70), 390], 20, 0)
-        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (2 * 70), 390], 16, 0)
-        pg.draw.circle(self.__BackBufferScreen, [150, 150, 150], [295 + (2 * 70), 390], 7, 0)
-
-        # Design_Scratch
-        pg.draw.circle(self.__BackBufferScreen, [100, 100, 100], [295 + (3 * 70), 390], 20, 0)
-        pg.draw.circle(self.__BackBufferScreen, [50, 50, 50], [295 + (3 * 70), 390], 16, 0)
-        pg.draw.line(self.__BackBufferScreen, [150, 150, 150], [295 - 5 + (3 * 70), 390 + 5],
-                     [295 + 5 + (3 * 70), 390 - 5])
-        pg.draw.line(self.__BackBufferScreen, [150, 150, 150], [295 - 7 + (3 * 70), 390 + 3],
-                     [295 + 3 + (3 * 70), 390 - 7])
-        pg.draw.line(self.__BackBufferScreen, [150, 150, 150], [295 - 3 + (3 * 70), 390 + 7],
-                     [295 + 7 + (3 * 70), 390 - 3])
+            self.__objChip.draw_chip(295 + (i * 70), 210, i, 0)
+            self.__objChip.draw_chip(295 + (i * 70), 300, i, 0)
+            self.__objChip.draw_chip(295 + (i * 70), 390, 4, i)
 
         # Layer 2
 
