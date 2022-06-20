@@ -31,12 +31,15 @@ class LoopPage(enum.IntEnum):
 # Class
 class CBasicVar:
     def __init__(self):
-        self.GameLoop  = True
-        self.GameBreak = False
-        self.LoopPage  = LoopPage.option
-        self.Music_ON  = False
-        self.Sound_ON  = False
-        self.end_yesno = 1
+        self.GameLoop   = True
+        self.GameBreak  = False
+        self.LoopPage   = LoopPage.option
+        self.end_yesno  = 1
+        self.Pl1_Color  = 0
+        self.Pl2_Color  = 1
+        self.ChipDesign = 0
+        self.Music_ON   = True
+        self.Sound_ON   = True
 
     def set_game_loop(self, game_loop: bool):
         self.GameLoop = game_loop
