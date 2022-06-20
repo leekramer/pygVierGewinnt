@@ -270,9 +270,11 @@ class CGame:
                             self.BasicVar.LoopPage = pgDM.LoopPage.menu
 
                     elif event.key == pg.K_LEFT:
-                        pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
+                        if self.BasicVar.end_yesno == 1:
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
                         self.BasicVar.end_yesno = 0
 
                     elif event.key == pg.K_RIGHT:
-                        pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
+                        if self.BasicVar.end_yesno == 0:
+                            pg.mixer.Sound.play(self.objGameAudio.snd_menu_move)
                         self.BasicVar.end_yesno = 1
