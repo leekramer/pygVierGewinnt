@@ -8,7 +8,7 @@
 # ####################################################
 # Description
 # ===========
-# Raster aus schwach blauen Kugel als Hintergrund
+# Raster aus schwach blauen Kugeln als Hintergrund
 #
 # ####################################################
 
