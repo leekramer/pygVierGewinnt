@@ -234,26 +234,26 @@ class CGame:
                 if event.key == pg.K_ESCAPE:  # Spiel beenden
                     self.__BasicVar.GameLoop = False
 
-                if self.__BasicVar.LoopPage == pgDM.LoopPage.title:
+                if self.__BasicVar.LoopPage == pgDM.LoopPage.title:                             # >>> LOOP_PAGE: Title
                     pass
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.menu:
+                elif self.__BasicVar.LoopPage == pgDM.LoopPage.menu:                            # >>> LOOP_PAGE: Menu
 
                     if event.key == pg.K_RETURN:
                         pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
-                        if self.__objMenuCursor.get_cursor_state() == 0:       # Spieler vs CPU
+                        if self.__objMenuCursor.get_cursor_state() == 0:    # Spieler vs CPU
                             self.__BasicVar.LoopPage = pgDM.LoopPage.game
 
-                        elif self.__objMenuCursor.get_cursor_state() == 1:     # Spieler vs Spieler
+                        elif self.__objMenuCursor.get_cursor_state() == 1:  # Spieler vs Spieler
                             self.__BasicVar.LoopPage = pgDM.LoopPage.game
 
-                        elif self.__objMenuCursor.get_cursor_state() == 2:     # Spielregeln
+                        elif self.__objMenuCursor.get_cursor_state() == 2:  # Spielregeln
                             self.__BasicVar.LoopPage = pgDM.LoopPage.rules
 
-                        elif self.__objMenuCursor.get_cursor_state() == 3:     # Option
+                        elif self.__objMenuCursor.get_cursor_state() == 3:  # Option
                             self.__BasicVar.LoopPage = pgDM.LoopPage.option
 
-                        elif self.__objMenuCursor.get_cursor_state() == 4:     # Spiel beenden
+                        elif self.__objMenuCursor.get_cursor_state() == 4:  # Spiel beenden
                             self.__BasicVar.LoopPage = pgDM.LoopPage.end
 
                     elif event.key == pg.K_UP:
@@ -266,7 +266,7 @@ class CGame:
                             pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
                             self.__objMenuCursor.set_next_position()
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.game:
+                elif self.__BasicVar.LoopPage == pgDM.LoopPage.game:                            # >>> LOOP_PAGE: Game
                     if event.key == pg.K_RETURN:
                         self.__BasicVar.LoopPage = pgDM.LoopPage.menu
 
@@ -276,16 +276,16 @@ class CGame:
                     elif event.key == pg.K_RIGHT:
                         pass
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.rules:
+                elif self.__BasicVar.LoopPage == pgDM.LoopPage.rules:                           # >>> LOOP_PAGE: Rules
                     if event.key == pg.K_RETURN:
                         pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
                         self.__BasicVar.LoopPage = pgDM.LoopPage.menu
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.option:
+                elif self.__BasicVar.LoopPage == pgDM.LoopPage.option:                          # >>> LOOP_PAGE: Option
                     if event.key == pg.K_RETURN:
                         self.__BasicVar.LoopPage = pgDM.LoopPage.menu
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.end:
+                elif self.__BasicVar.LoopPage == pgDM.LoopPage.end:                             # >>> LOOP_PAGE: End
                     if event.key == pg.K_RETURN:
                         pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
                         if self.__BasicVar.end_yesno == 0:
