@@ -41,21 +41,6 @@ class CBasicVar:
         self.Music_ON   = True
         self.Sound_ON   = True
 
-    def set_game_loop(self, game_loop: bool):
-        self.GameLoop = game_loop
-
-    def set_game_break(self, game_break: bool):
-        self.GameBreak = game_break
-
-    def set_loop_page(self, loop_page: LoopPage):
-        self.LoopPage = loop_page
-
-    def set_music_on(self, music_on: bool):
-        self.Music_ON = music_on
-
-    def set_sound_on(self, sound_on: bool):
-        self.Sound_ON = sound_on
-
 
 class CGameText:
     def __init__(self, toBuffer):
@@ -154,7 +139,6 @@ class CGameText:
         self.option_sound_aus.setFontSize(25)
         self.option_sound_aus.setTextColor([70, 70, 70])
 
-
         self.option_back = pgText.CText(toBuffer, 'Zurück', 270, 510)
         self.option_back.setFontSize(25)
         self.option_back.setTextColor([160, 160, 160])
@@ -174,6 +158,7 @@ class CGameImage:
         self.img_title_screen = pg.image.load('./graphic/vg_title.png')
         self.img_rules_01     = pg.image.load('./graphic/vg_01.png')
         self.icon             = pg.image.load('./graphic/vg_icon.png')
+
 
 class CGameAudio:
     def __init__(self):
