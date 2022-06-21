@@ -120,7 +120,10 @@ class CGame:
         # Nach 5 Sekunden -> Umschaltung auf Loop-Page: Menü
         pg.time.wait(5000)
         self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
-        # pg.mixer.music.play(-1, 0)  # <<< Musik in pg.DM hinzufügen !!
+
+        if self.__BasicVar.Music_ON == 1:
+            # pg.mixer.music.play(-1, 0)  # <<< Musik in pg.DM hinzufügen !!
+            pass
 
     def __gMenuScreen(self):
         # BackBuffer Actions
@@ -181,8 +184,8 @@ class CGame:
 
         # Layer 1
         for i in range(0, 4):
-            self.__objChip.draw_chip(295 + (i * 70), 210, i, 0)
-            self.__objChip.draw_chip(295 + (i * 70), 300, i, 0)
+            self.__objChip.draw_chip(295 + (i * 70), 210, i, self.__BasicVar.ChipDesign)
+            self.__objChip.draw_chip(295 + (i * 70), 300, i, self.__BasicVar.ChipDesign)
             self.__objChip.draw_chip(295 + (i * 70), 390, 4, i)
 
         # Layer 2
@@ -212,6 +215,61 @@ class CGame:
 
         self.__objGameText.option_back.drawText()
 
+        pg.draw.rect(self.__BackBufferScreen, [0, 0, 255], [270 + (self.__BasicVar.Pl1_Color * 70), 185, 50, 50], 1)
+        pg.draw.rect(self.__BackBufferScreen, [0, 0, 255], [270 + (self.__BasicVar.Pl2_Color * 70), 275, 50, 50], 1)
+        pg.draw.rect(self.__BackBufferScreen, [0, 0, 255], [270 + (self.__BasicVar.ChipDesign * 70), 365, 50, 50], 1)
+        pg.draw.rect(self.__BackBufferScreen, [0, 0, 255], [350 + (self.__BasicVar.Music_ON * 70), 420, 50, 28], 1)
+        pg.draw.rect(self.__BackBufferScreen, [0, 0, 255], [350 + (self.__BasicVar.Sound_ON * 70), 450, 50, 28], 1)
+
+        if self.__BasicVar.option_menu == 0:
+            self.__objGameText.option_col_pl1.setTextColor([0, 0, 255])
+            self.__objGameText.option_col_pl2.setTextColor([160, 160, 160])
+            self.__objGameText.option_design.setTextColor([160, 160, 160])
+            self.__objGameText.option_music.setTextColor([160, 160, 160])
+            self.__objGameText.option_sound.setTextColor([160, 160, 160])
+            self.__objGameText.option_back.setTextColor([160, 160, 160])
+
+        elif self.__BasicVar.option_menu == 1:
+            self.__objGameText.option_col_pl1.setTextColor([160, 160, 160])
+            self.__objGameText.option_col_pl2.setTextColor([0, 0, 255])
+            self.__objGameText.option_design.setTextColor([160, 160, 160])
+            self.__objGameText.option_music.setTextColor([160, 160, 160])
+            self.__objGameText.option_sound.setTextColor([160, 160, 160])
+            self.__objGameText.option_back.setTextColor([160, 160, 160])
+
+        elif self.__BasicVar.option_menu == 2:
+            self.__objGameText.option_col_pl1.setTextColor([160, 160, 160])
+            self.__objGameText.option_col_pl2.setTextColor([160, 160, 160])
+            self.__objGameText.option_design.setTextColor([0, 0, 255])
+            self.__objGameText.option_music.setTextColor([160, 160, 160])
+            self.__objGameText.option_sound.setTextColor([160, 160, 160])
+            self.__objGameText.option_back.setTextColor([160, 160, 160])
+
+        elif self.__BasicVar.option_menu == 3:
+            self.__objGameText.option_col_pl1.setTextColor([160, 160, 160])
+            self.__objGameText.option_col_pl2.setTextColor([160, 160, 160])
+            self.__objGameText.option_design.setTextColor([160, 160, 160])
+            self.__objGameText.option_music.setTextColor([0, 0, 255])
+            self.__objGameText.option_sound.setTextColor([160, 160, 160])
+            self.__objGameText.option_back.setTextColor([160, 160, 160])
+
+        elif self.__BasicVar.option_menu == 4:
+            self.__objGameText.option_col_pl1.setTextColor([160, 160, 160])
+            self.__objGameText.option_col_pl2.setTextColor([160, 160, 160])
+            self.__objGameText.option_design.setTextColor([160, 160, 160])
+            self.__objGameText.option_music.setTextColor([160, 160, 160])
+            self.__objGameText.option_sound.setTextColor([0, 0, 255])
+            self.__objGameText.option_back.setTextColor([160, 160, 160])
+
+        elif self.__BasicVar.option_menu == 5:
+            self.__objGameText.option_col_pl1.setTextColor([160, 160, 160])
+            self.__objGameText.option_col_pl2.setTextColor([160, 160, 160])
+            self.__objGameText.option_design.setTextColor([160, 160, 160])
+            self.__objGameText.option_music.setTextColor([160, 160, 160])
+            self.__objGameText.option_sound.setTextColor([160, 160, 160])
+            self.__objGameText.option_back.setTextColor([0, 0, 255])
+
+
     def __gEndScreen(self):
         # BackBuffer Actions
         # Layer 0 [Foundation Layer]
@@ -239,6 +297,7 @@ class CGame:
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:  # Spiel beenden
                     self.__BasicVar.GameLoop = False
+                    self.__BasicVar.option_menu = 0
 
                 if self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.TITLE:                             # >>> LOOP_PAGE: Title
                     pass
@@ -246,7 +305,9 @@ class CGame:
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.MENU:                            # >>> LOOP_PAGE: Menu
 
                     if event.key == pg.K_RETURN:
-                        pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
+                        if self.__BasicVar.Sound_ON == 1:
+                            pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
+
                         if self.__objMenuCursor.get_cursor_state() == 0:    # Spieler vs CPU
                             self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.GAME
 
@@ -264,12 +325,16 @@ class CGame:
 
                     elif event.key == pg.K_UP:
                         if self.__objMenuCursor.is_greater_min():
-                            pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+                            if self.__BasicVar.Sound_ON == 1:
+                                pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                             self.__objMenuCursor.set_prev_position()
 
                     elif event.key == pg.K_DOWN:
                         if self.__objMenuCursor.is_lower_max():
-                            pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+                            if self.__BasicVar.Sound_ON == 1:
+                                pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                             self.__objMenuCursor.set_next_position()
 
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.GAME:                            # >>> LOOP_PAGE: Game
@@ -284,16 +349,115 @@ class CGame:
 
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.RULES:                           # >>> LOOP_PAGE: Rules
                     if event.key == pg.K_RETURN:
-                        pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
+                        if self.__BasicVar.Sound_ON == 1:
+                            pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
+
                         self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
 
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.OPTION:                          # >>> LOOP_PAGE: Option
                     if event.key == pg.K_RETURN:
-                        self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
+                        if self.__BasicVar.option_menu == 5:
+                            if self.__BasicVar.Sound_ON == 1:
+                                pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
+
+                            self.__BasicVar.option_menu = 0
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
+
+                    elif event.key == pg.K_UP:
+                        if self.__BasicVar.option_menu > 0:
+                            if self.__BasicVar.Sound_ON == 1:
+                                pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
+                            self.__BasicVar.option_menu -= 1
+
+                    elif event.key == pg.K_DOWN:
+                        if self.__BasicVar.option_menu < 5:
+                            if self.__BasicVar.Sound_ON == 1:
+                                pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
+                            self.__BasicVar.option_menu += 1
+
+                    elif event.key == pg.K_LEFT:
+                        if self.__BasicVar.option_menu == 0:    # Chipfarbe Spieler 1
+                            if self.__BasicVar.Pl1_Color > 0:
+                                self.__BasicVar.Pl1_Color -= 1
+
+                                if self.__BasicVar.Pl1_Color == self.__BasicVar.Pl2_Color:  # Kollisionskontrolle
+                                    if self.__BasicVar.Pl2_Color > 0:
+                                        self.__BasicVar.Pl1_Color -= 1
+
+                                    else:
+                                        self.__BasicVar.Pl1_Color += 1
+
+                        elif self.__BasicVar.option_menu == 1:  # Chipfarbe CPU oder Spieler 2
+                            if self.__BasicVar.Pl2_Color > 0:
+                                self.__BasicVar.Pl2_Color -= 1
+
+                                if self.__BasicVar.Pl2_Color == self.__BasicVar.Pl1_Color:  # Kollisionskontrolle
+                                    if self.__BasicVar.Pl1_Color > 0:
+                                        self.__BasicVar.Pl2_Color -= 1
+
+                                    else:
+                                        self.__BasicVar.Pl2_Color += 1
+
+                        elif self.__BasicVar.option_menu == 2:  # Chipdesign
+                            if self.__BasicVar.ChipDesign > 0:
+                                self.__BasicVar.ChipDesign -= 1
+
+                        elif self.__BasicVar.option_menu == 3:  # Musik
+                            if self.__BasicVar.Music_ON > 0:
+                                self.__BasicVar.Music_ON -= 1
+                                # pg.mixer.music.stop()  # <<< Musik in pg.DM hinzufügen !!
+
+                        elif self.__BasicVar.option_menu == 4:  # Sound
+                            if self.__BasicVar.Sound_ON > 0:
+                                self.__BasicVar.Sound_ON -= 1
+
+                    elif event.key == pg.K_RIGHT:
+                        if self.__BasicVar.option_menu == 0:    # Chipfarbe Spieler 1
+                            if self.__BasicVar.Pl1_Color < 3:
+                                self.__BasicVar.Pl1_Color += 1
+
+                                if self.__BasicVar.Pl1_Color == self.__BasicVar.Pl2_Color:  # Kollisionskontrolle
+                                    if self.__BasicVar.Pl2_Color < 3:
+                                        self.__BasicVar.Pl1_Color += 1
+
+                                    else:
+                                        self.__BasicVar.Pl1_Color -= 1
+
+
+
+
+                        elif self.__BasicVar.option_menu == 1:  # Chipfarbe CPU oder Spieler 2
+                            if self.__BasicVar.Pl2_Color < 3:
+                                self.__BasicVar.Pl2_Color += 1
+
+                                if self.__BasicVar.Pl2_Color == self.__BasicVar.Pl1_Color:  # Kollisionskontrolle
+                                    if self.__BasicVar.Pl1_Color < 3:
+                                        self.__BasicVar.Pl2_Color += 1
+
+                                    else:
+                                        self.__BasicVar.Pl2_Color -= 1
+
+                        elif self.__BasicVar.option_menu == 2:  # Chipdesign
+                            if self.__BasicVar.ChipDesign < 3:
+                                self.__BasicVar.ChipDesign += 1
+
+                        elif self.__BasicVar.option_menu == 3:  # Musik
+                            if self.__BasicVar.Music_ON < 1:
+                                self.__BasicVar.Music_ON += 1
+                                # pg.mixer.music.play(-1, 0)  # <<< Musik in pg.DM hinzufügen !!
+
+                        elif self.__BasicVar.option_menu == 4:  # Sound
+                            if self.__BasicVar.Sound_ON < 1:
+                                self.__BasicVar.Sound_ON += 1
+
 
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.END:                             # >>> LOOP_PAGE: End
                     if event.key == pg.K_RETURN:
-                        pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
+                        if self.__BasicVar.Sound_ON == 1:
+                            pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
+
                         if self.__BasicVar.end_yesno == 0:
                             self.__BasicVar.GameLoop = False
 
@@ -302,10 +466,14 @@ class CGame:
 
                     elif event.key == pg.K_LEFT:
                         if self.__BasicVar.end_yesno == 1:
-                            pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+                            if self.__BasicVar.Sound_ON == 1:
+                                pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                         self.__BasicVar.end_yesno = 0
 
                     elif event.key == pg.K_RIGHT:
                         if self.__BasicVar.end_yesno == 0:
-                            pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+                            if self.__BasicVar.Sound_ON == 1:
+                                pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                         self.__BasicVar.end_yesno = 1

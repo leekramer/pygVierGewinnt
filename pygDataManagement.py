@@ -31,16 +31,18 @@ class LOOP_PAGE(enum.IntEnum):
 # Class
 class CBasicVar:
     def __init__(self):
-        self.GameLoop   = True
-        self.GameBreak  = False
-        self.LoopPage   = LOOP_PAGE.OPTION
-        self.end_yesno  = 1
-        self.Pl1_Color  = 0
-        self.Pl2_Color  = 1
-        self.GameMode   = 0
-        self.ChipDesign = 0
-        self.Music_ON   = True
-        self.Sound_ON   = True
+        self.GameLoop    = True
+        self.GameBreak   = False
+        self.LoopPage    = LOOP_PAGE.OPTION
+        self.Pl1_Color   = 0
+        self.Pl2_Color   = 1
+        self.GameMode    = 0
+        self.ChipDesign  = 0
+        self.Music_ON    = 1
+        self.Sound_ON    = 1
+
+        self.end_yesno   = 1
+        self.option_menu = 0
 
 
 class CGameText:
@@ -120,25 +122,25 @@ class CGameText:
         self.option_music.setFontSize(25)
         self.option_music.setTextColor([160, 160, 160])
 
-        self.option_music_an = pgText.CText(toBuffer, 'AN', 360, 420)
+        self.option_music_an = pgText.CText(toBuffer, 'AUS', 355, 420)
         self.option_music_an.setFontSize(25)
-        self.option_music_an.setTextColor([0, 255, 0])
+        self.option_music_an.setTextColor([255, 0, 0])
 
-        self.option_music_aus = pgText.CText(toBuffer, 'AUS', 420, 420)
+        self.option_music_aus = pgText.CText(toBuffer, 'AN', 430, 420)
         self.option_music_aus.setFontSize(25)
-        self.option_music_aus.setTextColor([70, 70, 70])
+        self.option_music_aus.setTextColor([0, 255, 0])
 
         self.option_sound = pgText.CText(toBuffer, 'Sound', 270, 450)
         self.option_sound.setFontSize(25)
         self.option_sound.setTextColor([160, 160, 160])
 
-        self.option_sound_an = pgText.CText(toBuffer, 'AN', 360, 450)
+        self.option_sound_an = pgText.CText(toBuffer, 'AUS', 355, 450)
         self.option_sound_an.setFontSize(25)
-        self.option_sound_an.setTextColor([0, 255, 0])
+        self.option_sound_an.setTextColor([255, 0, 0])
 
-        self.option_sound_aus = pgText.CText(toBuffer, 'AUS', 420, 450)
+        self.option_sound_aus = pgText.CText(toBuffer, 'AN', 430, 450)
         self.option_sound_aus.setFontSize(25)
-        self.option_sound_aus.setTextColor([70, 70, 70])
+        self.option_sound_aus.setTextColor([0, 255, 0])
 
         self.option_back = pgText.CText(toBuffer, 'Zurück', 270, 510)
         self.option_back.setFontSize(25)
