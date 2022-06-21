@@ -23,19 +23,25 @@ import pygCChip as pgChip
 
 # Class
 class CGame:
-    def __init__(self, ScreenTitle='Vier Gewinnt', displayWidth=800, displayHeight=600, displayMode=0):
+    def __init__(self):
         # Basic pygame settings
-        pg.init()
-        if displayMode == 0:
-            self.__FrontBufferScreen = pg.display.set_mode((displayWidth, displayHeight), pg.SHOWN)
+        self.ScreenTitle             = 'Vier Gewinnt'
+        self.displayWidth            = 800
+        self.displayHeight           = 600
+        self.displayMode             = 0
 
-        elif displayMode == 1:
-            self.__FrontBufferScreen = pg.display.set_mode((displayWidth, displayHeight), pg.FULLSCREEN)
+        pg.init()
+
+        if self.displayMode == 0:
+            self.__FrontBufferScreen = pg.display.set_mode((self.displayWidth, self.displayHeight), pg.SHOWN)
+
+        elif self.displayMode == 1:
+            self.__FrontBufferScreen = pg.display.set_mode((self.displayWidth, self.displayHeight), pg.FULLSCREEN)
 
         else:
-            self.__FrontBufferScreen = pg.display.set_mode((displayWidth, displayHeight))
+            self.__FrontBufferScreen = pg.display.set_mode((self.displayWidth, self.displayHeight))
 
-        self.__BackBufferScreen      = pg.Surface((displayWidth, displayHeight))
+        self.__BackBufferScreen      = pg.Surface((self.displayWidth, self.displayHeight))
         self.__Clock                 = pg.time.Clock()
 
         # Data-Management-Class-Menus
@@ -44,7 +50,7 @@ class CGame:
         self.__objGameImage          = pgDM.CGameImage()
         self.__objGameAudio          = pgDM.CGameAudio()
 
-        pg.display.set_caption(ScreenTitle)
+        pg.display.set_caption(self.ScreenTitle)
         pg.display.set_icon(self.__objGameImage.icon)
 
 
@@ -60,7 +66,7 @@ class CGame:
         self.gtTEST1                 = pgText.CText(self.__BackBufferScreen)
 
         # Info to Terminal
-        print('Display Mode: {}'.format(displayMode))
+        print('Display Mode: {}'.format(self.displayMode))
         print('Resolution  : {}x{}'.format(self.__BackBufferScreen.get_width(), self.__BackBufferScreen.get_height()))
 
     def gLoop(self):
