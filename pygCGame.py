@@ -55,7 +55,7 @@ class CGame:
 
 
         # GameMusic
-        # pg.mixer.music.load(self.objGameAudio.game_music)
+        # pg.mixer.music.load(self.objGameAudio.game_music)  # <<< Musik in pg.DM hinzufügen !!
 
         # Other Game-Objects
         self.__objMenuCursor         = pgMenuCursor.CMenuCursor(self.__BackBufferScreen, [330, 330], 5, 30)
@@ -120,7 +120,7 @@ class CGame:
         # Nach 5 Sekunden -> Umschaltung auf Loop-Page: Menü
         pg.time.wait(5000)
         self.__BasicVar.LoopPage = pgDM.LoopPage.menu
-        # pg.mixer.music.play(-1, 0)
+        # pg.mixer.music.play(-1, 0)  # <<< Musik in pg.DM hinzufügen !!
 
     def __gMenuScreen(self):
         # BackBuffer Actions
