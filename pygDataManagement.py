@@ -19,13 +19,13 @@ import enum
 
 
 # Enum
-class LoopPage(enum.IntEnum):
-    title  = 0
-    menu   = 1
-    game   = 2
-    rules  = 3
-    option = 4
-    end    = 5
+class LOOP_PAGE(enum.IntEnum):
+    TITLE  = 0
+    MENU   = 1
+    GAME   = 2
+    RULES  = 3
+    OPTION = 4
+    END    = 5
 
 
 # Class
@@ -33,10 +33,11 @@ class CBasicVar:
     def __init__(self):
         self.GameLoop   = True
         self.GameBreak  = False
-        self.LoopPage   = LoopPage.option
+        self.LoopPage   = LOOP_PAGE.OPTION
         self.end_yesno  = 1
         self.Pl1_Color  = 0
         self.Pl2_Color  = 1
+        self.GameMode   = 0
         self.ChipDesign = 0
         self.Music_ON   = True
         self.Sound_ON   = True

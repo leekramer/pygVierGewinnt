@@ -14,6 +14,21 @@
 
 # Import
 import pygame as pg
+import enum
+
+# Enum
+class CHIP_COLOR(enum.IntEnum):
+    YELLOW   = 0
+    RED      = 1
+    GREEN    = 2
+    BLUE     = 3
+    GREY     = 4
+
+class CHIP_DESIGN(enum.IntEnum):
+    STANDARD = 0
+    SQUARE   = 1
+    CIRCLE   = 2
+    SCRATCH  = 3
 
 
 # Class
@@ -21,13 +36,13 @@ class CChip:
     def __init__(self, toBuffer, cpColor: int, cpDesign: int):
         self.__BackBufferScreen = toBuffer
         if cpColor < 0 or cpColor > 4:
-            self.__color = 0
+            self.__color = CHIP_COLOR.YELLOW
 
         else:
             self.__color = cpColor
 
         if cpDesign < 0 or cpDesign > 3:
-            self.__design = 0
+            self.__design = CHIP_DESIGN.STANDARD
 
         else:
             self.__design = cpDesign
@@ -38,7 +53,7 @@ class CChip:
 
     def set_chip_color(self, cpColor):
         if cpColor < 0 or cpColor > 4:
-            self.__color = 0
+            self.__color = CHIP_COLOR.YELLOW
 
         else:
             self.__color = cpColor
@@ -48,7 +63,7 @@ class CChip:
 
     def set_design(self, cpDesign):
         if cpDesign < 0 or cpDesign > 3:
-            self.__design = 0
+            self.__design = CHIP_DESIGN.STANDARD
 
         else:
             self.__design = cpDesign
@@ -57,27 +72,27 @@ class CChip:
         return self.__design
 
     def draw_chip_pos(self, posX: int, posY: int):
-        if self.__color == 0:
+        if self.__color == CHIP_COLOR.YELLOW:
             self.__col_rim    = [205, 205, 0]
             self.__col_body   = [155, 155, 0]
             self.__col_design = [255, 255, 0]
 
-        elif self.__color == 1:
+        elif self.__color == CHIP_COLOR.RED:
             self.__col_rim    = [205, 0, 0]
             self.__col_body   = [155, 0, 0]
             self.__col_design = [255, 0, 0]
 
-        elif self.__color == 2:
+        elif self.__color == CHIP_COLOR.GREEN:
             self.__col_rim    = [0, 205, 0]
             self.__col_body   = [0, 155, 0]
             self.__col_design = [0, 255, 0]
 
-        elif self.__color == 3:
+        elif self.__color == CHIP_COLOR.BLUE:
             self.__col_rim    = [0, 0, 205]
             self.__col_body   = [0, 0, 155]
             self.__col_design = [0, 0, 255]
 
-        elif self.__color == 4:
+        elif self.__color == CHIP_COLOR.GREY:
             self.__col_rim    = [100, 100, 100]
             self.__col_body   = [50, 50, 50]
             self.__col_design = [150, 150, 150]

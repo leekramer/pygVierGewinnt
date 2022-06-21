@@ -75,22 +75,22 @@ class CGame:
             self.__gEvents()
 
             # Loop-Pages
-            if self.__BasicVar.LoopPage == pgDM.LoopPage.title:
+            if self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.TITLE:
                 self.__gTitleScreen()
 
-            elif self.__BasicVar.LoopPage == pgDM.LoopPage.menu:
+            elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.MENU:
                 self.__gMenuScreen()
 
-            elif self.__BasicVar.LoopPage == pgDM.LoopPage.game:
+            elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.GAME:
                 self.__gGameScreen()
 
-            elif self.__BasicVar.LoopPage == pgDM.LoopPage.rules:
+            elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.RULES:
                 self.__gRulesScreen()
 
-            elif self.__BasicVar.LoopPage == pgDM.LoopPage.option:
+            elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.OPTION:
                 self.__gOptionScreen()
 
-            elif self.__BasicVar.LoopPage == pgDM.LoopPage.end:
+            elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.END:
                 self.__gEndScreen()
 
             # FrontBuffer Actions
@@ -119,7 +119,7 @@ class CGame:
 
         # Nach 5 Sekunden -> Umschaltung auf Loop-Page: Menü
         pg.time.wait(5000)
-        self.__BasicVar.LoopPage = pgDM.LoopPage.menu
+        self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
         # pg.mixer.music.play(-1, 0)  # <<< Musik in pg.DM hinzufügen !!
 
     def __gMenuScreen(self):
@@ -240,27 +240,27 @@ class CGame:
                 if event.key == pg.K_ESCAPE:  # Spiel beenden
                     self.__BasicVar.GameLoop = False
 
-                if self.__BasicVar.LoopPage == pgDM.LoopPage.title:                             # >>> LOOP_PAGE: Title
+                if self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.TITLE:                             # >>> LOOP_PAGE: Title
                     pass
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.menu:                            # >>> LOOP_PAGE: Menu
+                elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.MENU:                            # >>> LOOP_PAGE: Menu
 
                     if event.key == pg.K_RETURN:
                         pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
                         if self.__objMenuCursor.get_cursor_state() == 0:    # Spieler vs CPU
-                            self.__BasicVar.LoopPage = pgDM.LoopPage.game
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.GAME
 
                         elif self.__objMenuCursor.get_cursor_state() == 1:  # Spieler vs Spieler
-                            self.__BasicVar.LoopPage = pgDM.LoopPage.game
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.GAME
 
                         elif self.__objMenuCursor.get_cursor_state() == 2:  # Spielregeln
-                            self.__BasicVar.LoopPage = pgDM.LoopPage.rules
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.RULES
 
                         elif self.__objMenuCursor.get_cursor_state() == 3:  # Option
-                            self.__BasicVar.LoopPage = pgDM.LoopPage.option
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.OPTION
 
                         elif self.__objMenuCursor.get_cursor_state() == 4:  # Spiel beenden
-                            self.__BasicVar.LoopPage = pgDM.LoopPage.end
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.END
 
                     elif event.key == pg.K_UP:
                         if self.__objMenuCursor.is_greater_min():
@@ -272,9 +272,9 @@ class CGame:
                             pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
                             self.__objMenuCursor.set_next_position()
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.game:                            # >>> LOOP_PAGE: Game
+                elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.GAME:                            # >>> LOOP_PAGE: Game
                     if event.key == pg.K_RETURN:
-                        self.__BasicVar.LoopPage = pgDM.LoopPage.menu
+                        self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
 
                     elif event.key == pg.K_LEFT:
                         pass
@@ -282,23 +282,23 @@ class CGame:
                     elif event.key == pg.K_RIGHT:
                         pass
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.rules:                           # >>> LOOP_PAGE: Rules
+                elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.RULES:                           # >>> LOOP_PAGE: Rules
                     if event.key == pg.K_RETURN:
                         pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
-                        self.__BasicVar.LoopPage = pgDM.LoopPage.menu
+                        self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.option:                          # >>> LOOP_PAGE: Option
+                elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.OPTION:                          # >>> LOOP_PAGE: Option
                     if event.key == pg.K_RETURN:
-                        self.__BasicVar.LoopPage = pgDM.LoopPage.menu
+                        self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
 
-                elif self.__BasicVar.LoopPage == pgDM.LoopPage.end:                             # >>> LOOP_PAGE: End
+                elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.END:                             # >>> LOOP_PAGE: End
                     if event.key == pg.K_RETURN:
                         pg.mixer.Sound.play(self.__objGameAudio.snd_menu_return)
                         if self.__BasicVar.end_yesno == 0:
                             self.__BasicVar.GameLoop = False
 
                         elif self.__BasicVar.end_yesno == 1:
-                            self.__BasicVar.LoopPage = pgDM.LoopPage.menu
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
 
                     elif event.key == pg.K_LEFT:
                         if self.__BasicVar.end_yesno == 1:
