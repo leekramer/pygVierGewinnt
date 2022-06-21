@@ -380,6 +380,9 @@ class CGame:
                     elif event.key == pg.K_LEFT:
                         if self.__BasicVar.option_menu == 0:    # Chipfarbe Spieler 1
                             if self.__BasicVar.Pl1_Color > 0:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Pl1_Color -= 1
 
                                 if self.__BasicVar.Pl1_Color == self.__BasicVar.Pl2_Color:  # Kollisionskontrolle
@@ -391,6 +394,9 @@ class CGame:
 
                         elif self.__BasicVar.option_menu == 1:  # Chipfarbe CPU oder Spieler 2
                             if self.__BasicVar.Pl2_Color > 0:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Pl2_Color -= 1
 
                                 if self.__BasicVar.Pl2_Color == self.__BasicVar.Pl1_Color:  # Kollisionskontrolle
@@ -402,20 +408,32 @@ class CGame:
 
                         elif self.__BasicVar.option_menu == 2:  # Chipdesign
                             if self.__BasicVar.ChipDesign > 0:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.ChipDesign -= 1
 
                         elif self.__BasicVar.option_menu == 3:  # Musik
                             if self.__BasicVar.Music_ON > 0:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Music_ON -= 1
                                 # pg.mixer.music.stop()  # <<< Musik in pg.DM hinzufügen !!
 
                         elif self.__BasicVar.option_menu == 4:  # Sound
                             if self.__BasicVar.Sound_ON > 0:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Sound_ON -= 1
 
                     elif event.key == pg.K_RIGHT:
                         if self.__BasicVar.option_menu == 0:    # Chipfarbe Spieler 1
                             if self.__BasicVar.Pl1_Color < 3:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Pl1_Color += 1
 
                                 if self.__BasicVar.Pl1_Color == self.__BasicVar.Pl2_Color:  # Kollisionskontrolle
@@ -425,11 +443,11 @@ class CGame:
                                     else:
                                         self.__BasicVar.Pl1_Color -= 1
 
-
-
-
                         elif self.__BasicVar.option_menu == 1:  # Chipfarbe CPU oder Spieler 2
                             if self.__BasicVar.Pl2_Color < 3:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Pl2_Color += 1
 
                                 if self.__BasicVar.Pl2_Color == self.__BasicVar.Pl1_Color:  # Kollisionskontrolle
@@ -441,15 +459,24 @@ class CGame:
 
                         elif self.__BasicVar.option_menu == 2:  # Chipdesign
                             if self.__BasicVar.ChipDesign < 3:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.ChipDesign += 1
 
                         elif self.__BasicVar.option_menu == 3:  # Musik
                             if self.__BasicVar.Music_ON < 1:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Music_ON += 1
                                 # pg.mixer.music.play(-1, 0)  # <<< Musik in pg.DM hinzufügen !!
 
                         elif self.__BasicVar.option_menu == 4:  # Sound
                             if self.__BasicVar.Sound_ON < 1:
+                                if self.__BasicVar.Sound_ON == 1:
+                                    pg.mixer.Sound.play(self.__objGameAudio.snd_menu_move)
+
                                 self.__BasicVar.Sound_ON += 1
 
 
