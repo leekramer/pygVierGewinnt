@@ -115,7 +115,6 @@ class CGame:
         # Nach 5 Sekunden -> Umschaltung auf Loop-Page: Menü
         pg.time.wait(5000)
         self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
-
         self.__Audio.play_music()
 
     def __gMenuScreen(self):
@@ -454,10 +453,11 @@ class CGame:
                     if event.key == pg.K_RETURN:
                         self.__Audio.play_menu_return()
 
-                        if self.__BasicVar.end_yesno == 0:
+                        if self.__BasicVar.end_yesno == 0:  # Spiel beenden? -> Ja
                             self.__BasicVar.GameLoop = False
+                            self.__Audio.stop_music()
 
-                        elif self.__BasicVar.end_yesno == 1:
+                        elif self.__BasicVar.end_yesno == 1:  # Spiel beenden? -> Nein
                             self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
 
                     elif event.key == pg.K_LEFT:

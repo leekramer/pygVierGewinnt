@@ -9,7 +9,8 @@ class CAudioControl:
         self.sound = 1
         self.music = 1
         self.__audio = CGameAudio()
-        # pg.mixer.music.load(self.__audio.game_music)
+        pg.mixer.music.load(self.__audio.game_music)
+        pg.mixer.music.set_volume(0.3)
 
     def play_menu_move(self):
         if self.sound == 1:
@@ -33,8 +34,8 @@ class CAudioControl:
 
     def play_music(self):
         self.music = 1
-        # pg.mixer.music.play(-1, 0)
+        pg.mixer.music.play(-1, 0)
 
     def stop_music(self):
         self.music = 0
-        # pg.mixer.music.stop()
+        pg.mixer.music.stop()

@@ -33,7 +33,7 @@ class CBasicVar:
     def __init__(self):
         self.GameLoop    = True
         self.GameBreak   = False
-        self.LoopPage    = LOOP_PAGE.MENU
+        self.LoopPage    = LOOP_PAGE.TITLE
         self.Pl1_Color   = 0
         self.Pl2_Color   = 1
         self.GameMode    = 0  # [0]: PL<->CPU, [1]: PL-PL
@@ -171,5 +171,5 @@ class CGameAudio:
         self.snd_win          = pg.mixer.Sound('./audio/win.mp3')
 
         # Game Music
-        self.game_music       = ''
+        self.game_music       = './audio/music.mp3'
 
