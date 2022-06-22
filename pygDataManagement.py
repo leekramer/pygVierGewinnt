@@ -33,7 +33,7 @@ class CBasicVar:
     def __init__(self):
         self.GameLoop    = True
         self.GameBreak   = False
-        self.LoopPage    = LOOP_PAGE.TITLE
+        self.LoopPage    = LOOP_PAGE.GAME
         self.Pl1_Color   = 0
         self.Pl2_Color   = 1
         self.GameMode    = 0  # [0]: PL<->CPU, [1]: PL-PL

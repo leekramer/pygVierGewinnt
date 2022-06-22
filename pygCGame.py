@@ -141,17 +141,21 @@ class CGame:
         self.__objBG.drawBGDarkBlue()
 
         # Layer 1
-        # pg.draw.rect(self.__BackBufferScreen, [0, 0, 150], [130, 130, 560, 425], 0)
-        pg.draw.rect(self.__BackBufferScreen, [0, 0, 150], [130, 130, 560, 425], 0, 1, 20, 20, 20, 20)
-        pg.draw.rect(self.__BackBufferScreen, [0, 100, 150], [130, 130, 560, 425], 3, 20)
+        pg.draw.rect(self.__BackBufferScreen, [0, 0, 150], [120, 130, 580, 430], 0, 1, 20, 20, 20, 20)
+        pg.draw.rect(self.__BackBufferScreen, [0, 100, 150], [120, 130, 580, 430], 3, 20)
+
+        for x in range(0, 7):
+            for y in range(0, 6):
+                pg.draw.circle(self.__BackBufferScreen, [0, 0, 20], [170 + (x * 80), 170 + (y * 70)], 22, 0)
+                pg.draw.circle(self.__BackBufferScreen, [0, 100, 150], [170 + (x * 80), 170 + (y * 70)], 22, 3)
+
+        # Layer 2
+        '''
         for x in range(0, 7):
             for y in range(0, 6):
                 self.__objChip.draw_chip(170 + (x * 80), 170 + (y * 70),
                                          pgChip.CHIP_COLOR.GREEN, pgChip.CHIP_DESIGN.SQUARE)
-
-
-        # Layer 2
-
+        '''
         # Layer 3 [Text Layer]
 
 
