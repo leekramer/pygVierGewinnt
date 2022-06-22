@@ -33,13 +33,11 @@ class CBasicVar:
     def __init__(self):
         self.GameLoop    = True
         self.GameBreak   = False
-        self.LoopPage    = LOOP_PAGE.OPTION
+        self.LoopPage    = LOOP_PAGE.MENU
         self.Pl1_Color   = 0
         self.Pl2_Color   = 1
-        self.GameMode    = 0
+        self.GameMode    = 0  # [0]: PL<->CPU, [1]: PL-PL
         self.ChipDesign  = 0
-        self.Music_ON    = 1
-        self.Sound_ON    = 1
 
         self.end_yesno   = 1
         self.option_menu = 0
@@ -158,9 +156,9 @@ class CGameText:
 
 class CGameImage:
     def __init__(self):
-        self.img_title_screen = pg.image.load('./graphic/vg_title.png')
-        self.img_rules_01     = pg.image.load('./graphic/vg_01.png')
-        self.icon             = pg.image.load('./graphic/vg_icon.png')
+        self.img_title_screen    = pg.image.load('./graphic/vg_title.png')
+        self.img_rules_01        = pg.image.load('./graphic/vg_01.png')
+        self.icon                = pg.image.load('./graphic/vg_icon.png')
 
 
 class CGameAudio:
@@ -168,8 +166,8 @@ class CGameAudio:
         # Game Sounds
         self.snd_menu_move    = pg.mixer.Sound('./audio/menu_move.mp3')
         self.snd_menu_return  = pg.mixer.Sound('./audio/menu_return.mp3')
-        self.snd_coin_insert  = pg.mixer.Sound('./audio/coin_insert.mp3')
         self.snd_coin_move    = pg.mixer.Sound('./audio/coin_move.mp3')
+        self.snd_coin_insert  = pg.mixer.Sound('./audio/coin_insert.mp3')
         self.snd_win          = pg.mixer.Sound('./audio/win.mp3')
 
         # Game Music
