@@ -32,11 +32,11 @@ class LOOP_PAGE(enum.IntEnum):
 class CBasicVar:
     def __init__(self):
         self.GameLoop    = True
-        self.GameBreak   = False
         self.LoopPage    = LOOP_PAGE.GAME
         self.Pl1_Color   = 0
         self.Pl2_Color   = 1
-        self.GameMode    = 0  # [0]: PL<->CPU, [1]: PL-PL
+        self.game_mode   = 0  # [0]: PL<->CPU, [1]: PL-PL
+        self.game_am_zug = 0
         self.ChipDesign  = 0
 
         self.end_yesno   = 1
@@ -75,6 +75,11 @@ class CGameText:
         self.menu_END = pgText.CText(toBuffer, 'Spiel beenden', 350, 300 + 5 * 30)
         self.menu_END.setFontSize(25)
         self.menu_END.setTextColor([160, 160, 160])
+
+        # GameText -> Game-Screen
+        self.game_am_zug = pgText.CText(toBuffer, 'Am Zug: ', 5, 5)
+        self.game_mode   = pgText.CText(toBuffer, 'Mode  : ', 5, 5 + (1 * 20))
+
 
         # GameText -> Rules-Screen
         self.rules_TITLE = pgText.CText(toBuffer, 'Regeln für Vier Gewinnt', 50, 150)
