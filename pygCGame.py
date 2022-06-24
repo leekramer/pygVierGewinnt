@@ -14,6 +14,7 @@
 
 # Import
 import pygame as pg
+import random as rd
 import pygCMenuCursor as pgMenuCursor
 import pygDataManagement as pgDM
 import pygCAudioControl as pgAudio
@@ -136,6 +137,20 @@ class CGame:
         self.__objGameText.menu_END.drawText()
 
     def __gGameScreen(self):
+        if self.__BasicVar.game_mode == 0:      # Spieler vs CPU
+            if self.__BasicVar.game_am_zug == 0:
+                pass
+
+            elif self.__BasicVar.game_am_zug == 1:
+                pass
+
+        elif self.__BasicVar.game_mode == 1:    # Spieler1 vs Spieler2
+            if self.__BasicVar.game_am_zug == 0:
+                pass
+            
+            elif self.__BasicVar.game_am_zug == 1:
+                pass
+
         # BackBuffer Actions
         # Layer 0 [Foundation Layer]
         self.__objBG.drawBGDarkBlue()
@@ -157,6 +172,11 @@ class CGame:
                                          pgChip.CHIP_COLOR.GREEN, pgChip.CHIP_DESIGN.SQUARE)
         '''
         # Layer 3 [Text Layer]
+        self.__objGameText.game_mode.setTextName('Mode    : ' + str(self.__BasicVar.game_mode))
+        self.__objGameText.game_mode.drawText()
+
+        self.__objGameText.game_am_zug.setTextName('Am Zug: ' + str(self.__BasicVar.game_am_zug))
+        self.__objGameText.game_am_zug.drawText()
 
 
     def __gRulesScreen(self):
@@ -272,7 +292,6 @@ class CGame:
             self.__objGameText.option_sound.setTextColor([160, 160, 160])
             self.__objGameText.option_back.setTextColor([0, 0, 255])
 
-
     def __gEndScreen(self):
         # BackBuffer Actions
         # Layer 0 [Foundation Layer]
@@ -311,12 +330,14 @@ class CGame:
                         self.__Audio.play_menu_return()
 
                         if self.__objMenuCursor.get_cursor_state() == 0:    # Spieler vs CPU
-                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.GAME
-                            self.__BasicVar.GameMode = 0
+                            self.__BasicVar.LoopPage    = pgDM.LOOP_PAGE.GAME
+                            self.__BasicVar.game_mode   = 0
+                            self.__BasicVar.game_am_zug = rd.randint(0, 1)
 
                         elif self.__objMenuCursor.get_cursor_state() == 1:  # Spieler vs Spieler
-                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.GAME
-                            self.__BasicVar.GameMode = 1
+                            self.__BasicVar.LoopPage    = pgDM.LOOP_PAGE.GAME
+                            self.__BasicVar.game_mode   = 1
+                            self.__BasicVar.game_am_zug = rd.randint(0, 1)
 
                         elif self.__objMenuCursor.get_cursor_state() == 2:  # Spielregeln
                             self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.RULES

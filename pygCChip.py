@@ -16,6 +16,7 @@
 import pygame as pg
 import enum
 
+
 # Enum
 class CHIP_COLOR(enum.IntEnum):
     YELLOW   = 0
@@ -33,8 +34,14 @@ class CHIP_DESIGN(enum.IntEnum):
 
 # Class
 class CChip:
-    def __init__(self, toBuffer, cpColor: int, cpDesign: int):
+    def __init__(self, toBuffer, cpColor: int, cpDesign: int, cpSize=20) -> None:
         self.__BackBufferScreen = toBuffer
+        self.__chip_size        = cpSize
+
+        self.__col_rim          = [0, 0, 0]
+        self.__col_body         = [0, 0, 0]
+        self.__col_design       = [0, 0, 0]
+
         if cpColor < 0 or cpColor > 4:
             self.__color = CHIP_COLOR.YELLOW
 
@@ -47,31 +54,30 @@ class CChip:
         else:
             self.__design = cpDesign
 
-        self.__col_rim    = [0, 0, 0]
-        self.__col_body   = [0, 0, 0]
-        self.__col_design = [0, 0, 0]
+    def set_chip_size(self, cpSize) -> None:
+        self.__chip_size = cpSize
 
-    def set_chip_color(self, cpColor):
+    def set_chip_color(self, cpColor: int) -> None:
         if cpColor < 0 or cpColor > 4:
             self.__color = CHIP_COLOR.YELLOW
 
         else:
             self.__color = cpColor
 
-    def get_chip_color(self):
+    def get_chip_color(self) -> int:
         return self.__color
 
-    def set_design(self, cpDesign):
+    def set_design(self, cpDesign: int) -> None:
         if cpDesign < 0 or cpDesign > 3:
             self.__design = CHIP_DESIGN.STANDARD
 
         else:
             self.__design = cpDesign
 
-    def get_design(self):
+    def get_design(self) -> int:
         return self.__design
 
-    def draw_chip_pos(self, posX: int, posY: int):
+    def draw_chip_pos(self, posX: int, posY: int) -> None:
         if self.__color == CHIP_COLOR.YELLOW:
             self.__col_rim    = [205, 205, 0]
             self.__col_body   = [155, 155, 0]
@@ -97,24 +103,36 @@ class CChip:
             self.__col_body   = [50, 50, 50]
             self.__col_design = [150, 150, 150]
 
-        pg.draw.circle(self.__BackBufferScreen, self.__col_rim, [posX, posY], 20, 0)
-        pg.draw.circle(self.__BackBufferScreen, self.__col_body, [posX, posY], 16, 0)
+        pg.draw.circle(self.__BackBufferScreen, self.__col_rim, [posX, posY], self.__chip_size, 0)
+        pg.draw.circle(self.__BackBufferScreen, self.__col_body, [posX, posY], self.__chip_size * 0.8, 0)
 
         if self.__design == 0:  # Default
             pass
 
         if self.__design == 1:  # Square
-            pg.draw.rect(self.__BackBufferScreen, self.__col_design, [posX - 6, posY - 6, 12, 12], 0)
+            ratio = self.__chip_size * 0.3  # Viereck-Design = 30% von Chipgröße
+            pg.draw.rect(self.__BackBufferScreen, self.__col_design,
+                         [posX - ratio, posY - ratio, ratio * 2, ratio * 2], 0)
 
         if self.__design == 2:  # Circle
-            pg.draw.circle(self.__BackBufferScreen, self.__col_design, [posX, posY], 7, 0)
+            ratio = self.__chip_size * 0.3  # Kreis-Design = 30% von Chipgröße
+            pg.draw.circle(self.__BackBufferScreen, self.__col_design, [posX, posY], ratio, 0)
 
         if self.__design == 3:  # Scratch
-            pg.draw.line(self.__BackBufferScreen, self.__col_design, [posX - 5, posY + 5], [posX + 5, posY - 5])
-            pg.draw.line(self.__BackBufferScreen, self.__col_design, [posX - 7, posY + 3], [posX + 3, posY - 7])
-            pg.draw.line(self.__BackBufferScreen, self.__col_design, [posX - 3, posY + 7], [posX + 7, posY - 3])
+            ratio  = self.__chip_size * 0.25  # Scratch-Design = 25% von Chipgröße
+            offset = self.__chip_size * 0.2   # Linien-Versatz = 20% von Chipgröße
+            pg.draw.line(self.__BackBufferScreen, self.__col_design,
+                         [posX - ratio, posY + ratio], [posX + ratio, posY - ratio])
 
-    def draw_chip(self, posX: int, posY: int, cpColor: int, cpDesign: int):
+            pg.draw.line(self.__BackBufferScreen, self.__col_design,
+                         [posX - (ratio + offset), posY + (ratio - offset)],
+                         [posX + (ratio - offset), posY - (ratio + offset)])
+
+            pg.draw.line(self.__BackBufferScreen, self.__col_design,
+                         [posX - (ratio - offset), posY + (ratio + offset)],
+                         [posX + (ratio + offset), posY - (ratio - offset)])
+
+    def draw_chip(self, posX: int, posY: int, cpColor: int, cpDesign: int) -> None:
         self.set_chip_color(cpColor)
         self.set_design(cpDesign)
         self.draw_chip_pos(posX, posY)
