@@ -332,6 +332,7 @@ class CGame:
                     if self.__objBoard.game_result() != 0:
                         if event.key == pg.K_RETURN:
                             self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
+                            self.__Audio.play_menu_return()
 
                     if not self.__objBoard.lock_key_events():
                         if event.key == pg.K_RETURN:

@@ -129,6 +129,7 @@ class CGameBoard:
             self.__game_grid[self.__coin_position][self.__free_coin_place] = self.__am_zug  # Set Coin to GameGrid
 
             self.__game_result = self.__grid_check()
+            ''' # Für Testzwecke
             if self.__game_result == 1:
                 print('Spieler 1 gewinnt!')
 
@@ -137,6 +138,9 @@ class CGameBoard:
 
             elif self.__game_result == 3:
                 print('Unentschieden!')
+            '''
+            if self.__game_result != 0:
+                self.__Audio.play_win()
 
             if self.__am_zug == 1:
                 self.__am_zug = 2
@@ -269,6 +273,7 @@ class CGameBoard:
             self.__lock_key_events = True
             pg.draw.rect(self.__BackBufferScreen, [0, 0, 20], [200, 200, 420, 150], 0)
             pg.draw.rect(self.__BackBufferScreen, [0, 255, 0], [200, 200, 420, 150], 3)
+
             if self.__game_result == 1:
                 self.__gtWin.setTextName('!! Spieler 1 hat gewonnen !!')
 
