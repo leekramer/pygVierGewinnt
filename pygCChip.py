@@ -34,7 +34,7 @@ class CHIP_DESIGN(enum.IntEnum):
 
 # Class
 class CChip:
-    def __init__(self, toBuffer, cpColor: int, cpDesign: int, cpSize=20) -> None:
+    def __init__(self, toBuffer, cpColor=0, cpDesign=0, cpSize=20) -> None:
         self.__BackBufferScreen = toBuffer
         self.__chip_size        = cpSize
 

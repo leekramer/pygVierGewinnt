@@ -20,23 +20,20 @@ import enum
 
 # Enum
 class LOOP_PAGE(enum.IntEnum):
-    TITLE  = 0
-    MENU   = 1
-    GAME   = 2
-    RULES  = 3
-    OPTION = 4
-    END    = 5
-
+    TITLE     = 0
+    MENU      = 1
+    GAME      = 2
+    RULES     = 3
+    OPTION    = 4
+    END       = 5
 
 # Class
 class CBasicVar:
     def __init__(self):
         self.GameLoop    = True
-        self.LoopPage    = LOOP_PAGE.GAME
+        self.LoopPage    = LOOP_PAGE.MENU
         self.Pl1_Color   = 0
         self.Pl2_Color   = 1
-        self.game_mode   = 0  # [0]: PL<->CPU, [1]: PL-PL
-        self.game_am_zug = 0
         self.ChipDesign  = 0
 
         self.end_yesno   = 1

@@ -14,12 +14,12 @@
 
 # Import
 import pygame as pg
-import random as rd
 import pygCMenuCursor as pgMenuCursor
 import pygDataManagement as pgDM
 import pygCAudioControl as pgAudio
 import pygCBackground as pgBG
 import pygCChip as pgChip
+import pygCGameBoard as pgBoard
 
 
 # Class
@@ -60,6 +60,7 @@ class CGame:
         self.__objMenuCursor         = pgMenuCursor.CMenuCursor(self.__BackBufferScreen, [330, 330], 5, 30)
         self.__objBG                 = pgBG.CBackgrund(self.__BackBufferScreen)
         self.__objChip               = pgChip.CChip(self.__BackBufferScreen, 0, 0)
+        self.__objBoard              = pgBoard.CGameBoard(self.__BackBufferScreen)
 
         # Info to Terminal
         print('Display Mode: {}'.format(self.displayMode))
@@ -137,47 +138,16 @@ class CGame:
         self.__objGameText.menu_END.drawText()
 
     def __gGameScreen(self):
-        if self.__BasicVar.game_mode == 0:      # Spieler vs CPU
-            if self.__BasicVar.game_am_zug == 0:
-                pass
-
-            elif self.__BasicVar.game_am_zug == 1:
-                pass
-
-        elif self.__BasicVar.game_mode == 1:    # Spieler1 vs Spieler2
-            if self.__BasicVar.game_am_zug == 0:
-                pass
-            
-            elif self.__BasicVar.game_am_zug == 1:
-                pass
-
         # BackBuffer Actions
         # Layer 0 [Foundation Layer]
         self.__objBG.drawBGDarkBlue()
 
         # Layer 1
-        pg.draw.rect(self.__BackBufferScreen, [0, 0, 150], [120, 130, 580, 430], 0, 1, 20, 20, 20, 20)
-        pg.draw.rect(self.__BackBufferScreen, [0, 100, 150], [120, 130, 580, 430], 3, 20)
-
-        for x in range(0, 7):
-            for y in range(0, 6):
-                pg.draw.circle(self.__BackBufferScreen, [0, 0, 20], [170 + (x * 80), 170 + (y * 70)], 22, 0)
-                pg.draw.circle(self.__BackBufferScreen, [0, 100, 150], [170 + (x * 80), 170 + (y * 70)], 22, 3)
+        self.__objBoard.draw_gameboard()
 
         # Layer 2
-        '''
-        for x in range(0, 7):
-            for y in range(0, 6):
-                self.__objChip.draw_chip(170 + (x * 80), 170 + (y * 70),
-                                         pgChip.CHIP_COLOR.GREEN, pgChip.CHIP_DESIGN.SQUARE)
-        '''
+
         # Layer 3 [Text Layer]
-        self.__objGameText.game_mode.setTextName('Mode    : ' + str(self.__BasicVar.game_mode))
-        self.__objGameText.game_mode.drawText()
-
-        self.__objGameText.game_am_zug.setTextName('Am Zug: ' + str(self.__BasicVar.game_am_zug))
-        self.__objGameText.game_am_zug.drawText()
-
 
     def __gRulesScreen(self):
         # BackBuffer Actions
@@ -330,14 +300,14 @@ class CGame:
                         self.__Audio.play_menu_return()
 
                         if self.__objMenuCursor.get_cursor_state() == 0:    # Spieler vs CPU
-                            self.__BasicVar.LoopPage    = pgDM.LOOP_PAGE.GAME
-                            self.__BasicVar.game_mode   = 0
-                            self.__BasicVar.game_am_zug = rd.randint(0, 1)
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.GAME
+                            self.__objBoard.prepare_board(self.__BasicVar.Pl1_Color, self.__BasicVar.Pl2_Color,
+                                                          self.__BasicVar.ChipDesign, pgBoard.GAME_MODE.PL_VS_CPU)
 
                         elif self.__objMenuCursor.get_cursor_state() == 1:  # Spieler vs Spieler
-                            self.__BasicVar.LoopPage    = pgDM.LOOP_PAGE.GAME
-                            self.__BasicVar.game_mode   = 1
-                            self.__BasicVar.game_am_zug = rd.randint(0, 1)
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.GAME
+                            self.__objBoard.prepare_board(self.__BasicVar.Pl1_Color, self.__BasicVar.Pl2_Color,
+                                                          self.__BasicVar.ChipDesign, pgBoard.GAME_MODE.PL_VS_PL)
 
                         elif self.__objMenuCursor.get_cursor_state() == 2:  # Spielregeln
                             self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.RULES
@@ -359,14 +329,18 @@ class CGame:
                             self.__Audio.play_menu_move()
 
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.GAME:                            # >>> LOOP_PAGE: Game
-                    if event.key == pg.K_RETURN:
-                        self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
+                    if not self.__objBoard.lock_key_events():
+                        if event.key == pg.K_RETURN:
+                            self.__objBoard.drop_coin()
 
-                    elif event.key == pg.K_LEFT:
-                        pass
+                        elif event.key == pg.K_g:
+                            self.__objBoard.print_grid_to_console()
 
-                    elif event.key == pg.K_RIGHT:
-                        pass
+                        elif event.key == pg.K_LEFT:
+                            self.__objBoard.decrement_coin_position()
+
+                        elif event.key == pg.K_RIGHT:
+                            self.__objBoard.increment_coin_position()
 
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.RULES:                           # >>> LOOP_PAGE: Rules
                     if event.key == pg.K_RETURN:
