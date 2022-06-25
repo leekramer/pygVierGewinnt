@@ -180,7 +180,7 @@ class CGameBoard:
 
         return 0
 
-    def __grid_check_diagonal(self):
+    def __grid_check_diagonal(self) -> int:
         for y in range(0, 3):
             for x in range(0, 4):
                 # Direction: to right
@@ -201,6 +201,19 @@ class CGameBoard:
                    self.__game_grid[4 - x][y + 1] == 2 and self.__game_grid[3 - x][y] == 2:
                     return 2
 
+    def __grid_check_full(self) -> int:
+        if self.__game_grid[0][0] != 0 and \
+           self.__game_grid[1][0] != 0 and \
+           self.__game_grid[2][0] != 0 and \
+           self.__game_grid[3][0] != 0 and \
+           self.__game_grid[4][0] != 0 and \
+           self.__game_grid[5][0] != 0 and \
+           self.__game_grid[6][0] != 0:
+            return 3
+
+        else:
+            return 0
+
     def __grid_check(self) -> int:
         tmp_column   = self.__grid_check_column()
         tmp_row      = self.__grid_check_row()
@@ -211,6 +224,9 @@ class CGameBoard:
 
         elif tmp_column == 2 or tmp_row == 2 or tmp_diagonal == 2:
             return 2
+
+        elif self.__grid_check_full() == 3:
+            return 3
 
         else:
             return 0
