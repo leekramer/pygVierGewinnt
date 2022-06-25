@@ -112,14 +112,25 @@ class CGameBoard:
             self.__column_count += 1
 
         if self.__column_count == self.__free_coin_place:
-            self.__game_grid[self.__coin_position][self.__free_coin_place] = self.__am_zug
+            self.__game_grid[self.__coin_position][self.__free_coin_place] = self.__am_zug  # Set Coin to GameGrid
+
+            game_result = self.__grid_check()
+            if game_result == 1:
+                print('Spieler 1 gewinnt!')
+
+            elif game_result == 2:
+                print('Spieler 2 gewinnt!')
+
+            elif game_result == 3:
+                print('Unentschieden!')
+
             if self.__am_zug == 1:
                 self.__am_zug = 2
 
             elif self.__am_zug == 2:
                 self.__am_zug = 1
 
-            self.__column_count            = -1
+            self.__column_count     = -1
             self.__wait_diff        = 0
             self.__anim_insert_coin = False
             self.__lock_key_events  = False
@@ -143,10 +154,70 @@ class CGameBoard:
                 elif self.__game_grid[x][y] == 2:
                     self.__chip_pl2.draw_chip_pos(170 + (x * 80), 170 + (y * 70))
 
+    def __grid_check_column(self) -> int:
+        for y in range(0, 6):
+            for x in range(0, 4):
+                if self.__game_grid[x][5 - y] == 1 and self.__game_grid[x + 1][5 - y] == 1 and \
+                   self.__game_grid[x + 2][5 - y] == 1 and self.__game_grid[x + 3][5 - y] == 1:
+                    return 1
+
+                elif self.__game_grid[x][5 - y] == 2 and self.__game_grid[x + 1][5 - y] == 2 and \
+                     self.__game_grid[x + 2][5 - y] == 2 and self.__game_grid[x + 3][5 - y] == 2:
+                    return 2
+
+        return 0
+
+    def __grid_check_row(self) -> int:
+        for x in range(0, 7):
+            for y in range(0, 3):
+                if self.__game_grid[x][y] == 1 and self.__game_grid[x][y + 1] == 1 and \
+                   self.__game_grid[x][y + 2] == 1 and self.__game_grid[x][y + 3] == 1:
+                    return 1
+
+                elif self.__game_grid[x][y] == 2 and self.__game_grid[x][y + 1] == 2 and \
+                     self.__game_grid[x][y + 2] == 2 and self.__game_grid[x][y + 3] == 2:
+                    return 2
+
+        return 0
+
+    def __grid_check_diagonal(self):
+        for y in range(0, 3):
+            for x in range(0, 4):
+                # Direction: to right
+                if self.__game_grid[x][y + 3] == 1 and self.__game_grid[x + 1][y + 2] == 1 and \
+                   self.__game_grid[x + 2][y + 1] == 1 and self.__game_grid[x + 3][y] == 1:
+                    return 1
+
+                elif self.__game_grid[x][y + 3] == 2 and self.__game_grid[x + 1][y + 2] == 2 and \
+                   self.__game_grid[x + 2][y + 1] == 2 and self.__game_grid[x + 3][y] == 2:
+                    return 2
+
+                # Direction_ left
+                if self.__game_grid[6 - x][y + 3] == 1 and self.__game_grid[5 - x][y + 2] == 1 and \
+                   self.__game_grid[4 - x][y + 1] == 1 and self.__game_grid[3 - x][y] == 1:
+                    return 1
+
+                elif self.__game_grid[6 - x][y + 3] == 2 and self.__game_grid[5 - x][y + 2] == 2 and \
+                   self.__game_grid[4 - x][y + 1] == 2 and self.__game_grid[3 - x][y] == 2:
+                    return 2
+
+    def __grid_check(self) -> int:
+        tmp_column   = self.__grid_check_column()
+        tmp_row      = self.__grid_check_row()
+        tmp_diagonal = self.__grid_check_diagonal()
+
+        if tmp_column == 1 or tmp_row == 1 or tmp_diagonal == 1:
+            return 1
+
+        elif tmp_column == 2 or tmp_row == 2 or tmp_diagonal == 2:
+            return 2
+
+        else:
+            return 0
+
     def draw_gameboard(self) -> None:
         self.__draw_board()
         self.__draw_coin_grid()
-
         if self.__anim_insert_coin:
             self.__animation_coin_insert()
             if self.__am_zug == 1:
@@ -171,11 +242,11 @@ class CGameBoard:
             self.__game_grid.append(tmp)
 
     def print_grid_to_console(self) -> None:
+        print('----- Game Grid -----')
         for y in range(0, 6):
             for x in range(0, 7):
                 print('[' + str(self.__game_grid[x][y]) + ']', end = '')
             print('')
-        print('---------------------')
 
 
 
