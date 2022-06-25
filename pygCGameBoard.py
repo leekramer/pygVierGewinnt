@@ -18,6 +18,7 @@ import enum
 from random import randint
 import pygCChip as pgChip
 from pygCAudioControl import CAudioControl
+from pygCText import CText
 
 # Enum
 class GAME_MODE(enum.IntEnum):
@@ -39,16 +40,29 @@ class CGameBoard:
         self.__lock_key_events  = False
         self.__wait_diff        = 0
         self.__game_speed       = 50
+        self.__game_result      = 0
         self.__chip_pl1         = pgChip.CChip(toBuffer)
         self.__chip_pl2         = pgChip.CChip(toBuffer)
-
         self.__coin_position    = 0
         self.__game_grid        = []
 
+        self.__gtWin            = CText(self.__BackBufferScreen, 'Win', 220, 230)
+        self.__gtWin.setFontSize(30)
+        self.__gtWin.setFontType('Segoe UI')
+        self.__gtWin.setFontBold(True)
+        self.__gtWin.setTextColor([0, 255, 0])
+
+        self.__gtWeiter         = CText(self.__BackBufferScreen, 'Weiter mit "Return"-Taste ...', 310, 290)
+        self.__gtWeiter.setTextColor([120, 120, 0])
+
+
     def prepare_board(self, gbChipPl1: pgChip.CHIP_COLOR, gbChipPl2: pgChip.CHIP_COLOR,
                       gbChipDesign: pgChip.CHIP_DESIGN, gbGameMode: GAME_MODE) -> None:
-        self.__am_zug    = randint(1, 2)
-        self.__game_mode = gbGameMode
+        self.__am_zug          = randint(1, 2)
+        self.__game_mode       = gbGameMode
+        self.__game_result     = 0
+        self.__lock_key_events = False
+        self.__coin_position   = 0
 
         self.__create_grid()
 
@@ -60,8 +74,8 @@ class CGameBoard:
         self.__chip_pl2.set_design(gbChipDesign)
         self.__chip_pl2.set_chip_size(self.__chip_size)
 
-    def reset_board(self) -> None:
-        pass
+    def game_result(self) -> int:
+        return self.__game_result
 
     def lock_key_events(self) -> bool:  # Sperrt Anwendereingaben solange andere Prozesse laufen
         if self.__lock_key_events:
@@ -114,14 +128,14 @@ class CGameBoard:
         if self.__column_count == self.__free_coin_place:
             self.__game_grid[self.__coin_position][self.__free_coin_place] = self.__am_zug  # Set Coin to GameGrid
 
-            game_result = self.__grid_check()
-            if game_result == 1:
+            self.__game_result = self.__grid_check()
+            if self.__game_result == 1:
                 print('Spieler 1 gewinnt!')
 
-            elif game_result == 2:
+            elif self.__game_result == 2:
                 print('Spieler 2 gewinnt!')
 
-            elif game_result == 3:
+            elif self.__game_result == 3:
                 print('Unentschieden!')
 
             if self.__am_zug == 1:
@@ -234,20 +248,38 @@ class CGameBoard:
     def draw_gameboard(self) -> None:
         self.__draw_board()
         self.__draw_coin_grid()
-        if self.__anim_insert_coin:
-            self.__animation_coin_insert()
-            if self.__am_zug == 1:
-                self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
 
-            elif self.__am_zug == 2:
-                self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
+        if self.__game_result == 0:
+            if self.__anim_insert_coin:
+                self.__animation_coin_insert()
+                if self.__am_zug == 1:
+                    self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
 
-        else:
-            if self.__am_zug == 1:
-                self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 90)
+                elif self.__am_zug == 2:
+                    self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
 
-            elif self.__am_zug == 2:
-                self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
+            else:
+                if self.__am_zug == 1:
+                    self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 90)
+
+                elif self.__am_zug == 2:
+                    self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
+
+        elif self.__game_result != 0:  # Pl1 | Pl2 | CPU Gewonnen | Unentschieden
+            self.__lock_key_events = True
+            pg.draw.rect(self.__BackBufferScreen, [0, 0, 20], [200, 200, 420, 150], 0)
+            pg.draw.rect(self.__BackBufferScreen, [0, 255, 0], [200, 200, 420, 150], 3)
+            if self.__game_result == 1:
+                self.__gtWin.setTextName('!! Spieler 1 hat gewonnen !!')
+
+            elif self.__game_result == 2:
+                self.__gtWin.setTextName('!! Spieler 2 hat gewonnen !!')
+
+            elif self.__game_result == 3:
+                self.__gtWin.setTextName('      !! Unentschieden !!')
+            self.__gtWin.drawText()
+
+            self.__gtWeiter.drawText()
 
     def __create_grid(self) -> None:
         self.__game_grid.clear()

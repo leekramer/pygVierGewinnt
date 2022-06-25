@@ -329,6 +329,10 @@ class CGame:
                             self.__Audio.play_menu_move()
 
                 elif self.__BasicVar.LoopPage == pgDM.LOOP_PAGE.GAME:                            # >>> LOOP_PAGE: Game
+                    if self.__objBoard.game_result() != 0:
+                        if event.key == pg.K_RETURN:
+                            self.__BasicVar.LoopPage = pgDM.LOOP_PAGE.MENU
+
                     if not self.__objBoard.lock_key_events():
                         if event.key == pg.K_RETURN:
                             self.__objBoard.drop_coin()
