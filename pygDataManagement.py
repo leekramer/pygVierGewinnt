@@ -158,9 +158,9 @@ class CGameText:
 
 class CGameImage:
     def __init__(self):
-        self.img_title_screen    = pg.image.load('./graphic/vg_title.png')
-        self.img_rules_01        = pg.image.load('./graphic/vg_01.png')
-        self.icon                = pg.image.load('./graphic/vg_icon.png')
+        self.img_title_screen = pg.image.load('./graphic/vg_title.png')
+        self.img_rules_01     = pg.image.load('./graphic/vg_01.png')
+        self.icon             = pg.image.load('./graphic/vg_icon.png')
 
 
 class CGameAudio:

@@ -18,13 +18,13 @@ import pygame as pg
 
 # Class
 class CBackgrund:
-    def __init__(self, toBuffer):
+    def __init__(self, toBuffer) -> None:
         self.__BackBufferScreen = toBuffer
 
-    def drawBGDarkBlue(self):
+    def drawBGDarkBlue(self) -> None:
         self.__BackBufferScreen.fill((0, 0, 20))
 
-    def drawBGGridballs(self):
+    def drawBGGridballs(self) -> None:
         self.__BackBufferScreen.fill((0, 0, 20))
 
         for y in range(0, 6):

@@ -211,12 +211,12 @@ class CGameBoard:
     def __grid_check_column(self) -> int:  # Sind 4 Chips in einer Reihe?
         for y in range(0, 6):
             for x in range(0, 4):
-                if self.__game_grid[x][5 - y] == 1 and self.__game_grid[x + 1][5 - y] == 1 and \
-                   self.__game_grid[x + 2][5 - y] == 1 and self.__game_grid[x + 3][5 - y] == 1:
+                if self.__game_grid[x][5 - y] == 1 and self.__game_grid[x + 1][5 - y] == 1\
+                        and self.__game_grid[x + 2][5 - y] == 1 and self.__game_grid[x + 3][5 - y] == 1:
                     return 1
 
-                elif self.__game_grid[x][5 - y] == 2 and self.__game_grid[x + 1][5 - y] == 2 and \
-                     self.__game_grid[x + 2][5 - y] == 2 and self.__game_grid[x + 3][5 - y] == 2:
+                elif self.__game_grid[x][5 - y] == 2 and self.__game_grid[x + 1][5 - y] == 2\
+                        and self.__game_grid[x + 2][5 - y] == 2 and self.__game_grid[x + 3][5 - y] == 2:
                     return 2
 
         return 0
@@ -224,12 +224,12 @@ class CGameBoard:
     def __grid_check_row(self) -> int:  # Sind 4 Chips in einer Spalte?
         for x in range(0, 7):
             for y in range(0, 3):
-                if self.__game_grid[x][y] == 1 and self.__game_grid[x][y + 1] == 1 and \
-                   self.__game_grid[x][y + 2] == 1 and self.__game_grid[x][y + 3] == 1:
+                if self.__game_grid[x][y] == 1 and self.__game_grid[x][y + 1] == 1\
+                        and self.__game_grid[x][y + 2] == 1 and self.__game_grid[x][y + 3] == 1:
                     return 1
 
-                elif self.__game_grid[x][y] == 2 and self.__game_grid[x][y + 1] == 2 and \
-                     self.__game_grid[x][y + 2] == 2 and self.__game_grid[x][y + 3] == 2:
+                elif self.__game_grid[x][y] == 2 and self.__game_grid[x][y + 1] == 2\
+                        and self.__game_grid[x][y + 2] == 2 and self.__game_grid[x][y + 3] == 2:
                     return 2
 
         return 0
@@ -238,21 +238,21 @@ class CGameBoard:
         for y in range(0, 3):
             for x in range(0, 4):
                 # Direction: to right
-                if self.__game_grid[x][y + 3] == 1 and self.__game_grid[x + 1][y + 2] == 1 and \
-                   self.__game_grid[x + 2][y + 1] == 1 and self.__game_grid[x + 3][y] == 1:
+                if self.__game_grid[x][y + 3] == 1 and self.__game_grid[x + 1][y + 2] == 1\
+                        and self.__game_grid[x + 2][y + 1] == 1 and self.__game_grid[x + 3][y] == 1:
                     return 1
 
-                elif self.__game_grid[x][y + 3] == 2 and self.__game_grid[x + 1][y + 2] == 2 and \
-                   self.__game_grid[x + 2][y + 1] == 2 and self.__game_grid[x + 3][y] == 2:
+                elif self.__game_grid[x][y + 3] == 2 and self.__game_grid[x + 1][y + 2] == 2\
+                        and self.__game_grid[x + 2][y + 1] == 2 and self.__game_grid[x + 3][y] == 2:
                     return 2
 
                 # Direction_ left
-                if self.__game_grid[6 - x][y + 3] == 1 and self.__game_grid[5 - x][y + 2] == 1 and \
-                   self.__game_grid[4 - x][y + 1] == 1 and self.__game_grid[3 - x][y] == 1:
+                if self.__game_grid[6 - x][y + 3] == 1 and self.__game_grid[5 - x][y + 2] == 1\
+                        and self.__game_grid[4 - x][y + 1] == 1 and self.__game_grid[3 - x][y] == 1:
                     return 1
 
-                elif self.__game_grid[6 - x][y + 3] == 2 and self.__game_grid[5 - x][y + 2] == 2 and \
-                   self.__game_grid[4 - x][y + 1] == 2 and self.__game_grid[3 - x][y] == 2:
+                elif self.__game_grid[6 - x][y + 3] == 2 and self.__game_grid[5 - x][y + 2] == 2\
+                        and self.__game_grid[4 - x][y + 1] == 2 and self.__game_grid[3 - x][y] == 2:
                     return 2
 
     def __grid_check_full(self) -> int:
@@ -355,7 +355,13 @@ class CGameBoard:
                 break
 
     def __cpu_normal_grid_check(self) -> None:
-        pass
+        if self.__game_grid[0][5] == 1 and self.__game_grid[1][5] == 1 and self.__game_grid[2][5] == 1\
+                and self.__game_grid[2][5] == 0:
+            pass
+        while True:
+            self.__cpu_drop_position = randint(0, 6)
+            if not self.__is_column_full(self.__cpu_drop_position):
+                break
 
     def __cpu_difficult_grid_check(self) -> None:
         pass

@@ -19,7 +19,7 @@ import pygame as pg
 
 # Class
 class CText:
-    def __init__(self, toBuffer, tTextName = 'Text', tPosX = 0, tPosY = 0):
+    def __init__(self, toBuffer, tTextName='Text', tPosX=0, tPosY=0):
         self.__BufferScreen  = toBuffer
         self.__FontType      = 'Arial'
         self.__FontSize      = 20
@@ -38,34 +38,34 @@ class CText:
 
         self.__updateSettings()
 
-    def setFontType(self, fType: str):
+    def setFontType(self, fType: str) -> None:
         self.__FontType = fType
         self.__updateSettings()
 
-    def setFontSize(self, fSize: int):
+    def setFontSize(self, fSize: int) -> None:
         self.__FontSize = fSize
         self.__updateSettings()
 
-    def setFontBold(self, fBold: bool):
+    def setFontBold(self, fBold: bool) -> None:
         self.__FontBold = fBold
         self.__updateSettings()
 
-    def setItalic(self, fItalic: bool):
+    def setItalic(self, fItalic: bool) -> None:
         self.__FontItalic = fItalic
         self.__updateSettings()
 
-    def setTextName(self, tText: str):
+    def setTextName(self, tText: str) -> None:
         if tText == '':
             tText = 'Text'
 
         self.__TextName = tText
         self.__updateSettings()
 
-    def setTextAntialias(self, tAntialias: bool):
+    def setTextAntialias(self, tAntialias: bool) -> None:
         self.__TextAntialias = tAntialias
         self.__updateSettings()
 
-    def setTextColor(self, tColor):
+    def setTextColor(self, tColor) -> None:
         tColorR, tColorG, tColorB = tColor
         if tColorR < 0 or tColorR > 255:
             tColorR = 255
@@ -81,13 +81,13 @@ class CText:
         self.__TextColor = tColor
         self.__updateSettings()
 
-    def setTextPosition(self, tPosX: int, tPosY: int):
+    def setTextPosition(self, tPosX: int, tPosY: int) -> None:
         self.__TextPosition = [tPosX, tPosY]
 
-    def __updateSettings(self):
+    def __updateSettings(self) -> None:
         self.__Font = pg.font.SysFont(self.__FontType, self.__FontSize, self.__FontBold, self.__FontItalic)
         self.__Text = self.__Font.render(self.__TextName, self.__TextAntialias, self.__TextColor)
         # self.__Text.set_alpha(50) <-- Experimentell [Transparenztest]
 
-    def drawText(self):
+    def drawText(self) -> None:
         self.__BufferScreen.blit(self.__Text, self.__TextPosition)

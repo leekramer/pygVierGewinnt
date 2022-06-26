@@ -19,7 +19,7 @@ import pygCText as pgText
 
 # Class
 class CMenuCursor:
-    def __init__(self, toBuffer, mcPosition, mcSteps, mcOffset):
+    def __init__(self, toBuffer, mcPosition, mcSteps, mcOffset) -> None:
         self.__CursorText = pgText.CText(toBuffer, '>', mcPosition[0], mcPosition[1])  # 330, 330
         self.__CursorText.setFontSize(25)
         self.__CursorText.setFontBold(True)
@@ -34,36 +34,36 @@ class CMenuCursor:
         self.__CursorSteps  = mcSteps - 1
         self.__CursorOffset = mcOffset
 
-    def set_next_position(self):
+    def set_next_position(self) -> None:
         if self.__CursorState < self.__CursorSteps:
             self.__CursorState += 1
             self.__CursorPosY += self.__CursorOffset
             self.__CursorText.setTextPosition(self.__CursorPosX, self.__CursorPosY)
 
-    def set_prev_position(self):
+    def set_prev_position(self) -> None:
         if self.__CursorState > 0:
             self.__CursorState -= 1
             self.__CursorPosY -= self.__CursorOffset
             self.__CursorText.setTextPosition(self.__CursorPosX, self.__CursorPosY)
 
-    def is_greater_min(self):
+    def is_greater_min(self) -> bool:
         if self.__CursorState > 0:
             return True
 
         else:
             return False
 
-    def is_lower_max(self):
+    def is_lower_max(self) -> bool:
         if self.__CursorState < self.__CursorSteps:
             return True
 
         else:
             return False
 
-    def get_cursor_state(self):
+    def get_cursor_state(self) -> int:
         return self.__CursorState
 
-    def showCursor(self):
+    def showCursor(self) -> None:
         self.__CursorText.drawText()
         if self.__CursorTime == 0:
             self.__CursorTime = pg.time.get_ticks() + self.__CursorFreq
