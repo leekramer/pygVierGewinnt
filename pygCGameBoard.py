@@ -30,26 +30,33 @@ class KEY_EVENTS(enum.IntEnum):
     LOCKED    = True
     UNLOCKED  = False
 
+class DIFFICULTY(enum.IntEnum):
+    STUPID    = 0
+    NORMAL    = 1
+    DIFFICULT = 2
 
 # Class
 class CGameBoard:
     def __init__(self, toBuffer) -> None:
-        self.__BackBufferScreen = toBuffer
-        self.__Audio            = CAudioControl()
-        self.__chip_size        = 25
-        self.__am_zug           = 1
-        self.__game_mode        = GAME_MODE.PL_VS_CPU
-        self.__anim_insert_coin = False
-        self.__free_coin_place  = 0
-        self.__column_count     = -1
-        self.__lock_key_events  = KEY_EVENTS.UNLOCKED
-        self.__wait_diff        = 0
-        self.__game_speed       = 50
-        self.__game_result      = 0
-        self.__chip_pl1         = pgChip.CChip(toBuffer)
-        self.__chip_pl2         = pgChip.CChip(toBuffer)
-        self.__coin_position    = 0
-        self.__game_grid        = []
+        self.__BackBufferScreen  = toBuffer
+        self.__Audio             = CAudioControl()
+        self.__chip_size         = 25
+        self.__am_zug            = 1
+        self.__game_grid         = []
+        self.__game_mode         = GAME_MODE.PL_VS_CPU
+        self.__game_speed        = 50
+        self.__game_result       = 0
+        self.__anim_insert_coin  = False
+        self.__free_coin_place   = 0
+        self.__coin_position     = 0
+        self.__column_count      = -1
+        self.__lock_key_events   = KEY_EVENTS.UNLOCKED
+        self.__wait_diff         = 0
+        self.__cpu_difficulty    = DIFFICULTY.STUPID
+        self.__cpu_drop_position = 0
+        self.__cpu_access_ones   = True
+        self.__chip_pl1          = pgChip.CChip(toBuffer)
+        self.__chip_pl2          = pgChip.CChip(toBuffer)
 
         self.__gtWin            = CText(self.__BackBufferScreen, 'Win', 220, 230)
         self.__gtWin.setFontSize(30)
@@ -79,6 +86,16 @@ class CGameBoard:
         self.__chip_pl2.set_design(gbChipDesign)
         self.__chip_pl2.set_chip_size(self.__chip_size)
 
+    def __wait_for(self, tmMilSec) -> bool:
+        if self.__wait_diff == 0:
+            self.__wait_diff = pg.time.get_ticks() + tmMilSec
+
+        elif self.__wait_diff > pg.time.get_ticks():
+            return False
+
+        elif self.__wait_diff <= pg.time.get_ticks():
+            return True
+
     def game_result(self) -> int:
         return self.__game_result
 
@@ -99,10 +116,20 @@ class CGameBoard:
             self.__Audio.play_coin_move()
             self.__coin_position -= 1
 
+    def __is_column_full(self, coin_position) -> bool:
+        for x in range(0, 6):
+            if self.__game_grid[coin_position][5 - x] == 0:
+                return False
+
+            else:
+                continue
+
+        return True
+
     def drop_coin(self):
-        if not self.__is_column_full():
+        if not self.__is_column_full(self.__coin_position):
             for x in range(0, 6):
-                if self.__game_grid[self.__coin_position][5 - x] == 0:
+                if self.__game_grid[self.__coin_position][5 - x] == 0:  # Welche Position in der Spalte ist frei?
                     self.__free_coin_place  = 5 - x
                     self.__lock_key_events  = KEY_EVENTS.LOCKED
                     self.__anim_insert_coin = True
@@ -112,63 +139,53 @@ class CGameBoard:
                 else:
                     continue
 
-    def __is_column_full(self) -> bool:
-        for x in range(0, 6):
-            if self.__game_grid[self.__coin_position][5 - x] == 0:
-                return False
-
-            else:
-                continue
-
-        return True
-
-    def __animation_coin_insert(self):
+    def __animation_coin_insert(self) -> None:
         if self.__wait_diff <= pg.time.get_ticks():
             self.__wait_diff = pg.time.get_ticks() + self.__game_speed
             self.__column_count += 1
 
         if self.__column_count == self.__free_coin_place:
-            self.__game_grid[self.__coin_position][self.__free_coin_place] = self.__am_zug  # Set Coin to GameGrid
-
-            self.__game_result = self.__grid_check()
-
-            # Ergebnisausgabe auf Konsole [Testzweck]
-            '''
-            if self.__game_result == 1:
-                print('Spieler 1 gewinnt!')
-
-            elif self.__game_result == 2:
-                print('Spieler 2 gewinnt!')
-
-            elif self.__game_result == 3:
-                print('Unentschieden!')
-            '''
-            if self.__game_result != 0:
-                self.__Audio.play_win()
-
-            if self.__am_zug == 1 and self.__game_mode == GAME_MODE.PL_VS_CPU:  # Spielerwechsel Sp1 auf CPU
-                self.__lock_key_events = KEY_EVENTS.LOCKED
-                self.__am_zug = 2
-
-            elif self.__am_zug == 1 and self.__game_mode == GAME_MODE.PL_VS_PL:  # Spielerwechsel Sp1 auf Sp2
-                self.__am_zug = 2
-
-            elif self.__am_zug == 2:  # Spielerwechsel CPU auf Sp1
-                self.__am_zug = 1
-
-            elif self.__am_zug == 2:  # Spielerwechsel Sp2 auf Sp1
-                self.__am_zug = 1
-
+            self.__anim_insert_coin = False
             self.__column_count     = -1
             self.__wait_diff        = 0
-            self.__anim_insert_coin = False
-            self.__lock_key_events  = KEY_EVENTS.UNLOCKED
+            self.__after_coin_insert()
+            return
 
         if self.__am_zug == 1:
             self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
 
         elif self.__am_zug == 2:
             self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
+
+    def __after_coin_insert(self) -> None:
+        self.__game_grid[self.__coin_position][self.__free_coin_place] = self.__am_zug  # Set Coin to GameGrid
+        self.__game_result = self.__grid_check()
+
+        if self.__game_result != 0:
+            self.__Audio.play_win()
+
+        # Ergebnisausgabe auf Konsole [Testzweck]
+        '''
+        if self.__game_result == 1:
+            print('Spieler 1 gewinnt!')
+
+        elif self.__game_result == 2:
+            print('Spieler 2 gewinnt!')
+
+        elif self.__game_result == 3:
+            print('Unentschieden!')
+        '''
+
+        if self.__am_zug == 1 and self.__game_mode == GAME_MODE.PL_VS_CPU:  # Spielerwechsel Sp1 auf CPU
+            self.__am_zug = 2
+
+        elif self.__am_zug == 1 and self.__game_mode == GAME_MODE.PL_VS_PL:  # Spielerwechsel Sp1 auf Sp2
+            self.__lock_key_events = KEY_EVENTS.UNLOCKED
+            self.__am_zug = 2
+
+        elif self.__am_zug == 2:  # Spielerwechsel CPU/Sp2 auf Sp1
+            self.__lock_key_events = KEY_EVENTS.UNLOCKED
+            self.__am_zug = 1
 
     def __draw_board(self) -> None:
         pg.draw.rect(self.__BackBufferScreen, [0, 0, 150], [120, 130, 580, 430], 0, 1, 20, 20, 20, 20)
@@ -183,7 +200,7 @@ class CGameBoard:
 
         self.__draw_coin_grid()
 
-    def __draw_coin_grid(self):
+    def __draw_coin_grid(self) -> None:
         for x in range(0, 7):
             for y in range(0, 6):
                 if self.__game_grid[x][y] == 1:
@@ -276,17 +293,17 @@ class CGameBoard:
                 self.__animation_coin_insert()
 
             else:
-                if self.__am_zug == 1:  # Bewegung durch Spieler 1
+                if self.__am_zug == 1:                                                  # Bewegung durch Spieler 1
                     self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 90)
 
-                elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_CPU:  # Bewegung durch CPU
+                elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_CPU:    # Bewegung durch CPU
+                    self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
+                    self.__cpu_player()
+
+                elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_PL:     # Bewegung durch Spieler 2
                     self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
 
-
-                elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_PL:  # Bewegung durch Spieler 2
-                    self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
-
-        elif self.__game_result != 0:  # Gewonnen | Unentschieden
+        elif self.__game_result != 0:                                                   # Gewonnen | Unentschieden
             self.__lock_key_events = KEY_EVENTS.LOCKED
             pg.draw.rect(self.__BackBufferScreen, [0, 0, 20], [200, 200, 420, 150], 0)
             pg.draw.rect(self.__BackBufferScreen, [0, 255, 0], [200, 200, 420, 150], 3)
@@ -305,6 +322,46 @@ class CGameBoard:
 
             self.__gtWin.drawText()
             self.__gtWeiter.drawText()
+
+    def __cpu_player(self) -> None:
+        if self.__wait_for(200):
+            self.__wait_diff = 0
+
+            if self.__cpu_access_ones:
+                self.__cpu_access_ones = False
+                if self.__cpu_difficulty == DIFFICULTY.STUPID:
+                    self.__cpu_drop_position = self.__cpu_stupid_grid_check()
+
+                elif self.__cpu_difficulty == DIFFICULTY.NORMAL:
+                    pass
+
+                elif self.__cpu_difficulty == DIFFICULTY.DIFFICULT:
+                    pass
+
+            if self.__coin_position > self.__cpu_drop_position:
+                self.decrement_coin_position()
+
+            elif self.__coin_position < self.__cpu_drop_position:
+                self.increment_coin_position()
+
+            elif self.__coin_position == self.__cpu_drop_position:
+                self.__cpu_access_ones = True
+                self.drop_coin()
+
+    def __cpu_stupid_grid_check(self) -> int:
+        while True:
+            cpu_drop_position = randint(0, 6)
+            if not self.__is_column_full(cpu_drop_position):
+                break
+
+        return cpu_drop_position
+
+    def __cpu_normal_grid_check(self) -> int:
+
+        pass
+
+    def __cpu_difficult_grid_check(self) -> int:
+        pass
 
     def __create_grid(self) -> None:
         self.__game_grid.clear()
