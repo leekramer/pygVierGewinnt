@@ -58,13 +58,13 @@ class CGameBoard:
         self.__chip_pl1          = pgChip.CChip(toBuffer)
         self.__chip_pl2          = pgChip.CChip(toBuffer)
 
-        self.__gtWin            = CText(self.__BackBufferScreen, 'Win', 220, 230)
+        self.__gtWin             = CText(self.__BackBufferScreen, 'Win', 220, 230)
         self.__gtWin.setFontSize(30)
         self.__gtWin.setFontType('Segoe UI')
         self.__gtWin.setFontBold(True)
         self.__gtWin.setTextColor([0, 255, 0])
 
-        self.__gtWeiter         = CText(self.__BackBufferScreen, 'Weiter mit "Return"-Taste ...', 310, 290)
+        self.__gtWeiter          = CText(self.__BackBufferScreen, 'Weiter mit "Return"-Taste ...', 310, 290)
         self.__gtWeiter.setTextColor([120, 120, 0])
 
 
@@ -333,10 +333,10 @@ class CGameBoard:
                     self.__cpu_drop_position = self.__cpu_stupid_grid_check()
 
                 elif self.__cpu_difficulty == DIFFICULTY.NORMAL:
-                    pass
+                    self.__cpu_drop_position = self.__cpu_normal_grid_check()
 
                 elif self.__cpu_difficulty == DIFFICULTY.DIFFICULT:
-                    pass
+                    self.__cpu_drop_position = self.__cpu_difficult_grid_check()
 
             if self.__coin_position > self.__cpu_drop_position:
                 self.decrement_coin_position()
