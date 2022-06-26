@@ -97,19 +97,16 @@ class CGameBoard:
 
     def drop_coin(self):
         if not self.__is_column_full():
-            self.__palce_coin_to_grid()
+            for x in range(0, 6):
+                if self.__game_grid[self.__coin_position][5 - x] == 0:
+                    self.__free_coin_place = 5 - x
+                    self.__lock_key_events = True
+                    self.__anim_insert_coin = True
+                    self.__Audio.play_coin_insert()
+                    return
 
-    def __palce_coin_to_grid(self):
-        for x in range(0, 6):
-            if self.__game_grid[self.__coin_position][5 - x] == 0:
-                self.__free_coin_place = 5 - x
-                self.__Audio.play_coin_insert()
-                self.__lock_key_events = True
-                self.__anim_insert_coin = True
-                return
-
-            else:
-                continue
+                else:
+                    continue
 
     def __is_column_full(self) -> bool:
         for x in range(0, 6):
