@@ -26,6 +26,10 @@ class GAME_MODE(enum.IntEnum):
     PL_VS_CPU = 0
     PL_VS_PL  = 1
 
+class KEY_EVENTS(enum.IntEnum):
+    LOCKED    = True
+    UNLOCKED  = False
+
 
 # Class
 class CGameBoard:
@@ -34,11 +38,11 @@ class CGameBoard:
         self.__Audio            = CAudioControl()
         self.__chip_size        = 25
         self.__am_zug           = 1
-        self.__game_mode        = 0
+        self.__game_mode        = GAME_MODE.PL_VS_CPU
         self.__anim_insert_coin = False
         self.__free_coin_place  = 0
         self.__column_count     = -1
-        self.__lock_key_events  = False
+        self.__lock_key_events  = KEY_EVENTS.UNLOCKED
         self.__wait_diff        = 0
         self.__game_speed       = 50
         self.__game_result      = 0
@@ -62,7 +66,7 @@ class CGameBoard:
         self.__am_zug          = randint(1, 2)
         self.__game_mode       = gbGameMode
         self.__game_result     = 0
-        self.__lock_key_events = False
+        self.__lock_key_events = KEY_EVENTS.UNLOCKED
         self.__coin_position   = 0
 
         self.__create_grid()
@@ -99,8 +103,8 @@ class CGameBoard:
         if not self.__is_column_full():
             for x in range(0, 6):
                 if self.__game_grid[self.__coin_position][5 - x] == 0:
-                    self.__free_coin_place = 5 - x
-                    self.__lock_key_events = True
+                    self.__free_coin_place  = 5 - x
+                    self.__lock_key_events  = KEY_EVENTS.LOCKED
                     self.__anim_insert_coin = True
                     self.__Audio.play_coin_insert()
                     return
@@ -127,7 +131,9 @@ class CGameBoard:
             self.__game_grid[self.__coin_position][self.__free_coin_place] = self.__am_zug  # Set Coin to GameGrid
 
             self.__game_result = self.__grid_check()
-            ''' # Für Testzwecke
+
+            # Ergebnisausgabe auf Konsole [Testzweck]
+            '''
             if self.__game_result == 1:
                 print('Spieler 1 gewinnt!')
 
@@ -140,16 +146,29 @@ class CGameBoard:
             if self.__game_result != 0:
                 self.__Audio.play_win()
 
-            if self.__am_zug == 1:
+            if self.__am_zug == 1 and self.__game_mode == GAME_MODE.PL_VS_CPU:  # Spielerwechsel Sp1 auf CPU
+                self.__lock_key_events = KEY_EVENTS.LOCKED
                 self.__am_zug = 2
 
-            elif self.__am_zug == 2:
+            elif self.__am_zug == 1 and self.__game_mode == GAME_MODE.PL_VS_PL:  # Spielerwechsel Sp1 auf Sp2
+                self.__am_zug = 2
+
+            elif self.__am_zug == 2:  # Spielerwechsel CPU auf Sp1
+                self.__am_zug = 1
+
+            elif self.__am_zug == 2:  # Spielerwechsel Sp2 auf Sp1
                 self.__am_zug = 1
 
             self.__column_count     = -1
             self.__wait_diff        = 0
             self.__anim_insert_coin = False
-            self.__lock_key_events  = False
+            self.__lock_key_events  = KEY_EVENTS.UNLOCKED
+
+        if self.__am_zug == 1:
+            self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
+
+        elif self.__am_zug == 2:
+            self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
 
     def __draw_board(self) -> None:
         pg.draw.rect(self.__BackBufferScreen, [0, 0, 150], [120, 130, 580, 430], 0, 1, 20, 20, 20, 20)
@@ -255,34 +274,36 @@ class CGameBoard:
         if self.__game_result == 0:
             if self.__anim_insert_coin:
                 self.__animation_coin_insert()
-                if self.__am_zug == 1:
-                    self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
-
-                elif self.__am_zug == 2:
-                    self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 170 + (self.__column_count * 70))
 
             else:
-                if self.__am_zug == 1:
+                if self.__am_zug == 1:  # Bewegung durch Spieler 1
                     self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 90)
 
-                elif self.__am_zug == 2:
+                elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_CPU:  # Bewegung durch CPU
                     self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
 
-        elif self.__game_result != 0:  # Pl1 | Pl2 | CPU Gewonnen | Unentschieden
-            self.__lock_key_events = True
+
+                elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_PL:  # Bewegung durch Spieler 2
+                    self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
+
+        elif self.__game_result != 0:  # Gewonnen | Unentschieden
+            self.__lock_key_events = KEY_EVENTS.LOCKED
             pg.draw.rect(self.__BackBufferScreen, [0, 0, 20], [200, 200, 420, 150], 0)
             pg.draw.rect(self.__BackBufferScreen, [0, 255, 0], [200, 200, 420, 150], 3)
 
             if self.__game_result == 1:
                 self.__gtWin.setTextName('!! Spieler 1 hat gewonnen !!')
 
-            elif self.__game_result == 2:
+            elif self.__game_result == 2 and self.__game_mode == GAME_MODE.PL_VS_CPU:
+                self.__gtWin.setTextName('    !! CPU hat gewonnen !!')
+
+            elif self.__game_result == 2 and self.__game_mode == GAME_MODE.PL_VS_PL:
                 self.__gtWin.setTextName('!! Spieler 2 hat gewonnen !!')
 
             elif self.__game_result == 3:
                 self.__gtWin.setTextName('      !! Unentschieden !!')
-            self.__gtWin.drawText()
 
+            self.__gtWin.drawText()
             self.__gtWeiter.drawText()
 
     def __create_grid(self) -> None:
@@ -293,7 +314,7 @@ class CGameBoard:
                 tmp.append(0)
             self.__game_grid.append(tmp)
 
-    def print_grid_to_console(self) -> None:
+    def print_grid_to_console(self) -> None:  # Ausgabe des Spielrasters auf Konsole über "g"-Taste [Testzweck]
         print('----- Game Grid -----')
         for y in range(0, 6):
             for x in range(0, 7):
