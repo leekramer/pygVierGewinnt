@@ -330,13 +330,13 @@ class CGameBoard:
             if self.__cpu_access_ones:
                 self.__cpu_access_ones = False
                 if self.__cpu_difficulty == DIFFICULTY.STUPID:
-                    self.__cpu_drop_position = self.__cpu_stupid_grid_check()
+                    self.__cpu_stupid_grid_check()
 
                 elif self.__cpu_difficulty == DIFFICULTY.NORMAL:
-                    self.__cpu_drop_position = self.__cpu_normal_grid_check()
+                    self.__cpu_normal_grid_check()
 
                 elif self.__cpu_difficulty == DIFFICULTY.DIFFICULT:
-                    self.__cpu_drop_position = self.__cpu_difficult_grid_check()
+                    self.__cpu_difficult_grid_check()
 
             if self.__coin_position > self.__cpu_drop_position:
                 self.decrement_coin_position()
@@ -348,19 +348,16 @@ class CGameBoard:
                 self.__cpu_access_ones = True
                 self.drop_coin()
 
-    def __cpu_stupid_grid_check(self) -> int:
+    def __cpu_stupid_grid_check(self) -> None:
         while True:
-            cpu_drop_position = randint(0, 6)
-            if not self.__is_column_full(cpu_drop_position):
+            self.__cpu_drop_position = randint(0, 6)
+            if not self.__is_column_full(self.__cpu_drop_position):
                 break
 
-        return cpu_drop_position
-
-    def __cpu_normal_grid_check(self) -> int:
-
+    def __cpu_normal_grid_check(self) -> None:
         pass
 
-    def __cpu_difficult_grid_check(self) -> int:
+    def __cpu_difficult_grid_check(self) -> None:
         pass
 
     def __create_grid(self) -> None:
