@@ -20,6 +20,7 @@ import pygCChip as pgChip
 from pygCAudioControl import CAudioControl
 from pygCText import CText
 
+
 # Enum
 class GAME_MODE(enum.IntEnum):
     PL_VS_CPU = 0
@@ -164,6 +165,8 @@ class CGameBoard:
                 pg.draw.circle(self.__BackBufferScreen, [0, 100, 150], [170 + (x * 80), 170 + (y * 70)],
                                self.__chip_size + 2 , 3)
 
+        self.__draw_coin_grid()
+
     def __draw_coin_grid(self):
         for x in range(0, 7):
             for y in range(0, 6):
@@ -172,7 +175,7 @@ class CGameBoard:
                 elif self.__game_grid[x][y] == 2:
                     self.__chip_pl2.draw_chip_pos(170 + (x * 80), 170 + (y * 70))
 
-    def __grid_check_column(self) -> int:
+    def __grid_check_column(self) -> int:  # Sind 4 Chips in einer Reihe?
         for y in range(0, 6):
             for x in range(0, 4):
                 if self.__game_grid[x][5 - y] == 1 and self.__game_grid[x + 1][5 - y] == 1 and \
@@ -185,7 +188,7 @@ class CGameBoard:
 
         return 0
 
-    def __grid_check_row(self) -> int:
+    def __grid_check_row(self) -> int:  # Sind 4 Chips in einer Spalte?
         for x in range(0, 7):
             for y in range(0, 3):
                 if self.__game_grid[x][y] == 1 and self.__game_grid[x][y + 1] == 1 and \
@@ -198,7 +201,7 @@ class CGameBoard:
 
         return 0
 
-    def __grid_check_diagonal(self) -> int:
+    def __grid_check_diagonal(self) -> int:   # Sind 4 Chips in einer diagonale?
         for y in range(0, 3):
             for x in range(0, 4):
                 # Direction: to right
@@ -232,7 +235,7 @@ class CGameBoard:
         else:
             return 0
 
-    def __grid_check(self) -> int:
+    def __grid_check(self) -> int:  # Prüfung des Gitters, ob VierGewinnt-Regeln erfüllt wurden
         tmp_column   = self.__grid_check_column()
         tmp_row      = self.__grid_check_row()
         tmp_diagonal = self.__grid_check_diagonal()
@@ -251,7 +254,6 @@ class CGameBoard:
 
     def draw_gameboard(self) -> None:
         self.__draw_board()
-        self.__draw_coin_grid()
 
         if self.__game_result == 0:
             if self.__anim_insert_coin:
