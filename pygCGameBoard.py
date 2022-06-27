@@ -358,7 +358,8 @@ class CGameBoard:
     def __cpu_normal_grid_check(self) -> None:
         if self.__signature_1_1() and self.__signature_1_2()\
                 and self.__signature_2()\
-                and self.__signature_3():
+                and self.__signature_3()\
+                and self.__signature_4():
             print('Random')
             self.__cpu_stupid_grid_check()
 
@@ -467,7 +468,15 @@ class CGameBoard:
         return True
 
     def __signature_4(self) -> bool:
-        pass
+        for y in range(0, 3):
+            for x in range(0, 7):
+                if self.__game_grid[x][5-y] == 1 and self.__game_grid[x][4-y] == 1\
+                        and self.__game_grid[x][3-y] == 1:
+                    if self.__game_grid[x][2-y] == 0:
+                        self.__cpu_drop_position = x
+                        return False
+
+        return True
 
     def __signature_5(self) -> bool:
         pass
