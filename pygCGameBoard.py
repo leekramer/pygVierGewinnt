@@ -52,7 +52,7 @@ class CGameBoard:
         self.__column_count      = -1
         self.__lock_key_events   = KEY_EVENTS.UNLOCKED
         self.__wait_diff         = 0
-        self.__cpu_difficulty    = DIFFICULTY.STUPID
+        self.__cpu_difficulty    = DIFFICULTY.NORMAL
         self.__cpu_drop_position = 0
         self.__cpu_access_ones   = True
         self.__chip_pl1          = pgChip.CChip(toBuffer)
@@ -297,7 +297,6 @@ class CGameBoard:
                     self.__chip_pl1.draw_chip_pos(170 + (self.__coin_position * 80), 90)
 
                 elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_CPU:    # Bewegung durch CPU
-                    self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
                     self.__cpu_player()
 
                 elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_PL:     # Bewegung durch Spieler 2
@@ -324,6 +323,8 @@ class CGameBoard:
             self.__gtWeiter.drawText()
 
     def __cpu_player(self) -> None:
+        self.__chip_pl2.draw_chip_pos(170 + (self.__coin_position * 80), 90)
+
         if self.__wait_for(200):
             self.__wait_diff = 0
 
@@ -355,13 +356,136 @@ class CGameBoard:
                 break
 
     def __cpu_normal_grid_check(self) -> None:
-        if self.__game_grid[0][5] == 1 and self.__game_grid[1][5] == 1 and self.__game_grid[2][5] == 1\
-                and self.__game_grid[2][5] == 0:
-            pass
-        while True:
-            self.__cpu_drop_position = randint(0, 6)
-            if not self.__is_column_full(self.__cpu_drop_position):
-                break
+        if self.__signature_1_1() and self.__signature_1_2()\
+                and self.__signature_2()\
+                and self.__signature_3():
+            print('Random')
+            self.__cpu_stupid_grid_check()
+
+    def __signature_1_1(self) -> bool:
+        for y in range(0, 6):
+            if self.__game_grid[0][5-y] == 1 and self.__game_grid[1][5-y] == 1\
+                    and self.__game_grid[2][5-y] == 1:
+                if self.__game_grid[3][5-y] == 0 and y == 0:
+                    self.__cpu_drop_position = 3
+                    print('Sig1.1: C1')
+                    return False
+
+                elif self.__game_grid[3][5 - y] == 0 and y != 0:
+                    if self.__game_grid[3][5-y+1] != 0:
+                        self.__cpu_drop_position = 3
+                        print('Sig1.1: C1')
+                        return False
+
+            elif self.__game_grid[4][5-y] == 1 and self.__game_grid[5][5-y] == 1\
+                    and self.__game_grid[6][5-y] == 1:
+                if self.__game_grid[3][5-y] == 0 and y == 0:
+                    self.__cpu_drop_position = 3
+                    print('Sig1.1: C2')
+                    return False
+
+                elif self.__game_grid[3][5-y] == 0 and y != 0:
+                    if self.__game_grid[3][5-y+1] != 0:
+                        self.__cpu_drop_position = 3
+                        print('Sig1.1: C2')
+                        return False
+
+        return True
+
+    def __signature_1_2(self) -> bool:
+        tmp_choice_1 = [-1, 0]  # [Wert, Position]
+        tmp_choice_2 = [-1, 0]
+
+        for x in range(0, 3):
+            for y in range(0, 6):
+                if self.__game_grid[1+x][5-y] == 1 and self.__game_grid[2+x][5-y] == 1\
+                        and self.__game_grid[3+x][5-y] == 1:
+                    if self.__game_grid[x][5-y] == 0 and y == 0:  # Choice1
+                        tmp_choice_1 = [0, x]
+
+                    elif self.__game_grid[x][5-y] == 0 and y != 0:
+                        if self.__game_grid[x][5-y+1] != 0:
+                            tmp_choice_1 = [0, x]
+
+                    if self.__game_grid[x+4][5-y] == 0 and y == 0:  # Choice2
+                        tmp_choice_2 = [0, x+4]
+
+                    elif self.__game_grid[x+4][5-y] == 0 and y != 0:
+                        if self.__game_grid[x+4][5-y+1] != 0:
+                            tmp_choice_2 = [0, x+4]
+
+        if tmp_choice_1[0] == 0 and tmp_choice_2[0] == 0:
+            x = randint(0, 1)
+            if x == 0:
+                self.__cpu_drop_position = tmp_choice_1[1]
+
+            elif x == 1:
+                self.__cpu_drop_position = tmp_choice_2[1]
+
+            return False
+
+        elif tmp_choice_1[0] == 0 and tmp_choice_2[0] != 0:
+            self.__cpu_drop_position = tmp_choice_1[1]
+            return False
+
+        elif tmp_choice_1[0] != 0 and tmp_choice_2[0] == 0:
+            self.__cpu_drop_position = tmp_choice_2[1]
+            return False
+
+        return True
+
+    def __signature_2(self) -> bool:
+        for y in range(0, 6):
+            for x in range(0, 4):
+                if self.__game_grid[x][5-y] == 1 and self.__game_grid[x+1][5-y] == 1\
+                        and self.__game_grid[x+3][5-y] == 1:
+                    if self.__game_grid[x+2][5-y] == 0 and y == 0:
+                        self.__cpu_drop_position = x + 2
+                        return False
+
+                    elif self.__game_grid[x+2][5-y] == 0 and y != 0:
+                        if self.__game_grid[x+2][5-y+1] != 0:
+                            self.__cpu_drop_position = x + 2
+                            return False
+
+        return True
+
+    def __signature_3(self) -> bool:
+        for y in range(0, 6):
+            for x in range(0, 4):
+                if self.__game_grid[x][5 - y] == 1 and self.__game_grid[x + 2][5 - y] == 1 \
+                        and self.__game_grid[x + 3][5 - y] == 1:
+                    if self.__game_grid[x + 1][5 - y] == 0 and y == 0:
+                        self.__cpu_drop_position = x + 1
+                        return False
+
+                    elif self.__game_grid[x + 1][5 - y] == 0 and y != 0:
+                        if self.__game_grid[x + 1][5 - y + 1] != 0:
+                            self.__cpu_drop_position = x + 1
+                            return False
+
+        return True
+
+    def __signature_4(self) -> bool:
+        pass
+
+    def __signature_5(self) -> bool:
+        pass
+
+    def __signature_6(self) -> bool:
+        pass
+
+    def __signature_7(self) -> bool:
+        pass
+
+    def __signature_8(self) -> bool:
+        pass
+
+    def __signature_9(self) -> bool:
+        pass
+
+    def __signature_10(self) -> bool:
+        pass
 
     def __cpu_difficult_grid_check(self) -> None:
         pass
