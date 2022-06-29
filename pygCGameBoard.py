@@ -64,6 +64,9 @@ class CGameBoard:
         self.__gtWin.setFontBold(True)
         self.__gtWin.setTextColor([0, 255, 0])
 
+        self.__gtAamZug = CText(self.__BackBufferScreen, 'Am Zug: ', 280, 10)
+        self.__gtAamZug.injektAttributesFrom(self.__gtWin.extractAttributes())
+
         self.__gtWeiter          = CText(self.__BackBufferScreen, 'Weiter mit "Return"-Taste ...', 310, 290)
         self.__gtWeiter.setTextColor([120, 120, 0])
 
@@ -286,6 +289,18 @@ class CGameBoard:
             return 0
 
     def draw_gameboard(self) -> None:
+        if self.__am_zug == 1:
+            self.__gtAamZug.setTextName('Spieler 1 ist am Zug')
+            self.__gtAamZug.drawText()
+
+        elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_CPU:
+            self.__gtAamZug.setTextName('    CPU ist am Zug')
+            self.__gtAamZug.drawText()
+
+        elif self.__am_zug == 2 and self.__game_mode == GAME_MODE.PL_VS_PL:
+            self.__gtAamZug.setTextName('Spieler 2 ist am Zug')
+            self.__gtAamZug.drawText()
+
         self.__draw_board()
 
         if self.__game_result == 0:
@@ -360,7 +375,7 @@ class CGameBoard:
                 and self.__signature_2()\
                 and self.__signature_3()\
                 and self.__signature_4():
-            print('Random')
+
             self.__cpu_stupid_grid_check()
 
     def __signature_1_1(self) -> bool:
@@ -369,26 +384,22 @@ class CGameBoard:
                     and self.__game_grid[2][5-y] == 1:
                 if self.__game_grid[3][5-y] == 0 and y == 0:
                     self.__cpu_drop_position = 3
-                    print('Sig1.1: C1')
                     return False
 
                 elif self.__game_grid[3][5 - y] == 0 and y != 0:
                     if self.__game_grid[3][5-y+1] != 0:
                         self.__cpu_drop_position = 3
-                        print('Sig1.1: C1')
                         return False
 
             elif self.__game_grid[4][5-y] == 1 and self.__game_grid[5][5-y] == 1\
                     and self.__game_grid[6][5-y] == 1:
                 if self.__game_grid[3][5-y] == 0 and y == 0:
                     self.__cpu_drop_position = 3
-                    print('Sig1.1: C2')
                     return False
 
                 elif self.__game_grid[3][5-y] == 0 and y != 0:
                     if self.__game_grid[3][5-y+1] != 0:
                         self.__cpu_drop_position = 3
-                        print('Sig1.1: C2')
                         return False
 
         return True
@@ -489,7 +500,7 @@ class CGameBoard:
 
     def __signature_8(self) -> bool:
         pass
-
+    
     def __signature_9(self) -> bool:
         pass
 
