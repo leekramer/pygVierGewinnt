@@ -19,7 +19,7 @@ import pygame as pg
 
 # Class
 class CText:
-    def __init__(self, toBuffer, tTextName='Text', tPosX=0, tPosY=0):
+    def __init__(self, toBuffer, tTextName='Text', tPosX=0, tPosY=0) -> None:
         self.__BufferScreen  = toBuffer
         self.__FontType      = 'Arial'
         self.__FontSize      = 20
@@ -80,6 +80,26 @@ class CText:
 
         self.__TextColor = tColor
         self.__updateSettings()
+
+    def extractAttributes(self) -> list:
+        tmpAttr = [self.__FontSize,
+                   self.__FontType,
+                   self.__FontBold,
+                   self.__FontItalic,
+                   self.__TextAntialias,
+                   self.__TextColor,
+                   self.__TextPosition]
+
+        return tmpAttr
+
+    def injektAttributesFrom(self, _attributes) -> None:
+        self.__FontSize      = _attributes[0]
+        self.__FontType      = _attributes[1]
+        self.__FontBold      = _attributes[2]
+        self.__FontItalic    = _attributes[3]
+        self.__TextAntialias = _attributes[4]
+        self.__TextColor     = _attributes[5]
+        self.__TextPosition  = _attributes[6]
 
     def setTextPosition(self, tPosX: int, tPosY: int) -> None:
         self.__TextPosition = [tPosX, tPosY]
