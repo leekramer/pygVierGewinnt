@@ -48,34 +48,27 @@ class CGameText:
         self.title_bottom_info1.setFontSize(18)
         self.title_bottom_info1.setTextColor([80, 80, 0])
 
-        self.title_bottom_info2 = pgText.CText(toBuffer, 'Made with Python 3.10 & PyGame 2.1.0', 250, 570)
-        self.title_bottom_info2.setFontSize(18)
-        self.title_bottom_info2.setTextColor([80, 80, 0])
+        self.title_bottom_info2 = pgText.CText(toBuffer, 'Made with Python 3.10 & PyGame 2.1.0', 250, 570,
+                                               self.title_bottom_info1.extractAttributes())
 
         # GameText -> Menu-Screen
         self.menu_PLvsCPU = pgText.CText(toBuffer, 'Spieler vs CPU', 350, 300 + 1 * 30)
         self.menu_PLvsCPU.setFontSize(25)
         self.menu_PLvsCPU.setTextColor([160, 160, 160])
 
-        self.menu_PLvsPL = pgText.CText(toBuffer, 'Spieler vs Spieler', 350, 300 + 2 * 30)
-        self.menu_PLvsPL.setFontSize(25)
-        self.menu_PLvsPL.setTextColor([160, 160, 160])
+        self.menu_PLvsPL = pgText.CText(toBuffer, 'Spieler vs Spieler', 350, 300 + 2 * 30,
+                                        self.menu_PLvsCPU.extractAttributes())
 
-        self.menu_RULES  = pgText.CText(toBuffer, 'Spielregeln', 350, 300 + 3 * 30)
-        self.menu_RULES.setFontSize(25)
-        self.menu_RULES.setTextColor([160, 160, 160])
+        self.menu_RULES  = pgText.CText(toBuffer, 'Spielregeln', 350, 300 + 3 * 30,
+                                        self.menu_PLvsCPU.extractAttributes())
 
-        self.menu_OPTION = pgText.CText(toBuffer, 'Option', 350, 300 + 4 * 30)
-        self.menu_OPTION.setFontSize(25)
-        self.menu_OPTION.setTextColor([160, 160, 160])
+        self.menu_OPTION = pgText.CText(toBuffer, 'Option', 350, 300 + 4 * 30,
+                                        self.menu_PLvsCPU.extractAttributes())
 
-        self.menu_END = pgText.CText(toBuffer, 'Spiel beenden', 350, 300 + 5 * 30)
-        self.menu_END.setFontSize(25)
-        self.menu_END.setTextColor([160, 160, 160])
+        self.menu_END = pgText.CText(toBuffer, 'Spiel beenden', 350, 300 + 5 * 30,
+                                     self.menu_PLvsCPU.extractAttributes())
 
         # GameText -> Game-Screen
-        self.game_am_zug = pgText.CText(toBuffer, 'Am Zug: ', 5, 5)
-        self.game_mode   = pgText.CText(toBuffer, 'Mode  : ', 5, 5 + (1 * 20))
 
 
         # GameText -> Rules-Screen
@@ -110,17 +103,14 @@ class CGameText:
         self.option_col_pl1.setFontSize(25)
         self.option_col_pl1.setTextColor([160, 160, 160])
 
-        self.option_col_pl2 = pgText.CText(toBuffer, 'Chipfarbe CPU oder Spieler 2', 270, 240)
-        self.option_col_pl2.setFontSize(25)
-        self.option_col_pl2.setTextColor([160, 160, 160])
+        self.option_col_pl2 = pgText.CText(toBuffer, 'Chipfarbe CPU oder Spieler 2', 270, 240,
+                                           self.option_col_pl1.extractAttributes())
 
-        self.option_design = pgText.CText(toBuffer, 'Chipdesign', 270, 330)
-        self.option_design.setFontSize(25)
-        self.option_design.setTextColor([160, 160, 160])
+        self.option_design = pgText.CText(toBuffer, 'Chipdesign', 270, 330,
+                                          self.option_col_pl1.extractAttributes())
 
-        self.option_music = pgText.CText(toBuffer, 'Musik', 270, 420)
-        self.option_music.setFontSize(25)
-        self.option_music.setTextColor([160, 160, 160])
+        self.option_music = pgText.CText(toBuffer, 'Musik', 270, 420,
+                                         self.option_col_pl1.extractAttributes())
 
         self.option_music_an = pgText.CText(toBuffer, 'AUS', 355, 420)
         self.option_music_an.setFontSize(25)
@@ -130,9 +120,8 @@ class CGameText:
         self.option_music_aus.setFontSize(25)
         self.option_music_aus.setTextColor([0, 255, 0])
 
-        self.option_sound = pgText.CText(toBuffer, 'Sound', 270, 450)
-        self.option_sound.setFontSize(25)
-        self.option_sound.setTextColor([160, 160, 160])
+        self.option_sound = pgText.CText(toBuffer, 'Sound', 270, 450,
+                                         self.option_col_pl1.extractAttributes())
 
         self.option_sound_an = pgText.CText(toBuffer, 'AUS', 355, 450)
         self.option_sound_an.setFontSize(25)
@@ -142,19 +131,16 @@ class CGameText:
         self.option_sound_aus.setFontSize(25)
         self.option_sound_aus.setTextColor([0, 255, 0])
 
-        self.option_back = pgText.CText(toBuffer, 'Zurück', 270, 510)
-        self.option_back.setFontSize(25)
-        self.option_back.setTextColor([160, 160, 160])
+        self.option_back = pgText.CText(toBuffer, 'Zurück', 270, 510,
+                                        self.option_col_pl1.extractAttributes())
 
         # GameText -> End-Screen
         self.end_question = pgText.CText(toBuffer, 'Möchtest du das Spiel beenden?', 250, 360)
         self.end_question.setFontSize(25)
         self.end_question.setTextColor([255, 0, 0])
 
-        self.end_yesno = pgText.CText(toBuffer, 'Ja                      Nein', 300, 410)
-        self.end_yesno.setFontSize(25)
-        self.end_yesno.setTextColor([255, 0, 0])
-
+        self.end_yesno = pgText.CText(toBuffer, 'Ja                      Nein', 300, 410,
+                                      self.end_question.extractAttributes())
 
 class CGameImage:
     def __init__(self):

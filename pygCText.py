@@ -19,18 +19,20 @@ import pygame as pg
 
 # Class
 class CText:
-    def __init__(self, toBuffer, injAttr=None, tTextName='Text', tPosX=0, tPosY=0) -> None:
+    def __init__(self, toBuffer, tTextName='Text', tPosX=0, tPosY=0, injAttr=None) -> None:
         self.__BufferScreen  = toBuffer
+
+        if tTextName == '':
+            tTextName = 'Text'
+
+        self.__TextName      = tTextName
+
         if injAttr is None:
             self.__FontType      = 'Arial'
             self.__FontSize      = 20
             self.__FontBold      = False
             self.__FontItalic    = False
 
-            if tTextName == '':
-                tTextName = 'Text'
-
-            self.__TextName      = tTextName
             self.__TextAntialias = True
             self.__TextColor     = [255, 255, 255]
             self.__TextPosition  = [tPosX, tPosY]
@@ -41,7 +43,6 @@ class CText:
             self.__FontBold      = injAttr[2]
             self.__FontItalic    = injAttr[3]
 
-            self.__TextName      = tTextName
             self.__TextAntialias = injAttr[4]
             self.__TextColor     = injAttr[5]
             self.__TextPosition  = [tPosX, tPosY]
