@@ -64,7 +64,7 @@ class CGameBoard:
         self.__gtWin.setFontBold(True)
         self.__gtWin.setTextColor([0, 255, 0])
 
-        self.__gtAamZug = CText(self.__BackBufferScreen, 'Am Zug: ', 280, 10)
+        self.__gtAamZug          = CText(self.__BackBufferScreen, 'Am Zug: ', 280, 10)
         self.__gtAamZug.injektAttributesFrom(self.__gtWin.extractAttributes())
 
         self.__gtWeiter          = CText(self.__BackBufferScreen, 'Weiter mit "Return"-Taste ...', 310, 290)
