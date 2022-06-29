@@ -19,22 +19,35 @@ import pygame as pg
 
 # Class
 class CText:
-    def __init__(self, toBuffer, tTextName='Text', tPosX=0, tPosY=0) -> None:
+    def __init__(self, toBuffer, injAttr=None, tTextName='Text', tPosX=0, tPosY=0) -> None:
         self.__BufferScreen  = toBuffer
-        self.__FontType      = 'Arial'
-        self.__FontSize      = 20
-        self.__FontBold      = False
-        self.__FontItalic    = False
-        self.__Font          = None
+        if injAttr is None:
+            self.__FontType      = 'Arial'
+            self.__FontSize      = 20
+            self.__FontBold      = False
+            self.__FontItalic    = False
 
-        if tTextName == '':
-            tTextName = 'Text'
+            if tTextName == '':
+                tTextName = 'Text'
 
-        self.__TextName      = tTextName
-        self.__TextAntialias = True
-        self.__TextColor     = [255, 255, 255]
-        self.__TextPosition  = [tPosX, tPosY]
-        self.__Text          = None
+            self.__TextName      = tTextName
+            self.__TextAntialias = True
+            self.__TextColor     = [255, 255, 255]
+            self.__TextPosition  = [tPosX, tPosY]
+
+        elif injAttr is not None:
+            self.__FontType      = injAttr[0]
+            self.__FontSize      = injAttr[1]
+            self.__FontBold      = injAttr[2]
+            self.__FontItalic    = injAttr[3]
+
+            self.__TextName      = tTextName
+            self.__TextAntialias = injAttr[4]
+            self.__TextColor     = injAttr[5]
+            self.__TextPosition  = [tPosX, tPosY]
+
+        self.__Text = None
+        self.__Font = None
 
         self.__updateSettings()
 
@@ -82,24 +95,22 @@ class CText:
         self.__updateSettings()
 
     def extractAttributes(self) -> list:
-        tmpAttr = [self.__FontSize,
-                   self.__FontType,
+        tmpAttr = [self.__FontType,
+                   self.__FontSize,
                    self.__FontBold,
                    self.__FontItalic,
                    self.__TextAntialias,
-                   self.__TextColor,
-                   self.__TextPosition]
+                   self.__TextColor]
 
         return tmpAttr
 
     def injektAttributesFrom(self, _attributes) -> None:
-        self.__FontSize      = _attributes[0]
-        self.__FontType      = _attributes[1]
+        self.__FontType      = _attributes[0]
+        self.__FontSize      = _attributes[1]
         self.__FontBold      = _attributes[2]
         self.__FontItalic    = _attributes[3]
         self.__TextAntialias = _attributes[4]
         self.__TextColor     = _attributes[5]
-        self.__TextPosition  = _attributes[6]
 
     def setTextPosition(self, tPosX: int, tPosY: int) -> None:
         self.__TextPosition = [tPosX, tPosY]
