@@ -31,7 +31,7 @@ class LOOP_PAGE(enum.IntEnum):
 class CBasicVar:
     def __init__(self):
         self.GameLoop    = True
-        self.LoopPage    = LOOP_PAGE.MENU
+        self.LoopPage    = LOOP_PAGE.TITLE
         self.Pl1_Color   = 0
         self.Pl2_Color   = 1
         self.ChipDesign  = 0
