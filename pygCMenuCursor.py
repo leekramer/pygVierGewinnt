@@ -14,13 +14,13 @@
 
 # Import
 import pygame as pg
-import pygCText as pgText
+from pygcTextV20220610 import cText
 
 
 # Class
 class CMenuCursor:
     def __init__(self, toBuffer, mcPosition, mcSteps, mcOffset) -> None:
-        self.__CursorText = pgText.CText(toBuffer, '>', mcPosition[0], mcPosition[1])  # 330, 330
+        self.__CursorText = cText(toBuffer, '>', mcPosition[0], mcPosition[1])  # 330, 330
         self.__CursorText.setFontSize(25)
         self.__CursorText.setFontBold(True)
         self.__CursorText.setTextColor([255, 0, 0])

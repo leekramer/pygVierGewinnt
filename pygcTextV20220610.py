@@ -18,7 +18,7 @@ import pygame as pg
 
 
 # Class
-class CText:
+class cText:
     def __init__(self, toBuffer, tTextName='Text', tPosX=0, tPosY=0, injAttr=None) -> None:
         self.__BufferScreen  = toBuffer
 
